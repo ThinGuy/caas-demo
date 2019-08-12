@@ -1,0 +1,286 @@
+Fetching latest public cloud list...
+This client's list of public clouds is up to date, see `juju clouds --local`.
+10:59:23 INFO  juju.cmd supercommand.go:57 running juju [2.6.6 gc go1.10.4]
+10:59:23 DEBUG juju.cmd supercommand.go:58   args: []string{"/snap/juju/8594/bin/juju", "bootstrap", "aws/us-west-1", "aws-us-west-1", "--bootstrap-series=bionic", "--debug", "--show-log"}
+10:59:23 DEBUG juju.cmd.juju.commands bootstrap.go:1038 authenticating with region "us-west-1" and credential "admin" ()
+10:59:23 DEBUG juju.cmd.juju.commands bootstrap.go:1166 provider attrs: map[vpc-id-force:false vpc-id:]
+10:59:23 INFO  cmd authkeys.go:114 Adding contents of "/home/ubuntu/.local/share/juju/ssh/juju_id_rsa.pub" to authorized-keys
+10:59:23 INFO  cmd authkeys.go:114 Adding contents of "/home/ubuntu/.ssh/id_rsa.pub" to authorized-keys
+10:59:23 DEBUG juju.cmd.juju.commands bootstrap.go:1225 preparing controller with config: map[agent-metadata-url: backup-dir: firewall-mode:instance enable-os-refresh-update:true juju-ftp-proxy: disable-network-management:false agent-stream:released snap-store-assertions: name:controller automatically-retry-hooks:true juju-http-proxy: container-image-stream:released vpc-id-force:false container-image-metadata-url: egress-subnets: resource-tags: ignore-machine-addresses:false apt-http-proxy: max-action-results-size:5G max-action-results-age:336h authorized-keys:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDaFoq85+s9mwKSgxtsLTlXPxTOmRdlJr7Jc+dTOZS2QCfSkmKOPuxDqP21JltjdJUHbQJ6q91HGPMDGF/X3CUAV8KqmK+8KXHY5TcAyTlig7uwHV+NhXodIkKi2pNPManvGoHI8QWIDWzgpKfprGXK2vAzO/MX4W+zfe6p/v18KHG3AfZH/xL5Q3DuAqlAfy2tJNZ0F07BSsolmSl5LkvcDDN3Ave/dkrBdAlGWOy3a9DFJhmEFXsM5zNnR96qCVjKX6UukC2PVckSD7BUPm91H8jhZgn3tc2mOcv+obKHci+EzfxBSH4rdqvuRBCNkQXizxeMRMrErpB21pTsLnhZ juju-client-key
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCtw0SqBJqIQk94Xgiyui7vugTFvew52Tg4aG5WDozm3EIsT6hCX+6Dr+oCf/B7xym9gXrPheKCVBiPMhBhlblkQgwyaFgCpPSCS5X7aluhr+ceMv45Ob8FKSrsOvX9cT08AySIk7Ud8lEUhtbB+qveIYcBWeH7PUaEEoU+j1/xf3/64ndFP7AwAIVPSmCMjIgJY1ehpnWZE//8KUKeuCAwZqqFrZLvYuDlzRO8OJ68htqnhRztIBJnf+lOMUJINYM1Fx4wIOetWUqLgbh1A9hC8anKMPLmlN3BmWw1sndNNt61i6fqaLYpPZ50ydU82UHa1QXfFtgsW5EBFXhCcx/7 ubuntu@OrangeBox20
+ juju-no-proxy:127.0.0.1,localhost,::1 transmit-vendor-metrics:true apt-ftp-proxy: apt-no-proxy: uuid:d6f7f735-1705-4897-896e-d397b565fe35 apt-https-proxy: logforward-enabled:false max-status-history-size:5G logging-config: snap-https-proxy: default-series:bionic http-proxy: container-inherit-properties: proxy-ssh:false ftp-proxy: snap-http-proxy: type:ec2 update-status-hook-interval:5m ssl-hostname-verification:true no-proxy:127.0.0.1,localhost,::1 provisioner-harvest-mode:destroyed apt-mirror: cloudinit-userdata: development:false net-bond-reconfigure-delay:17 https-proxy: fan-config: container-networking-method: max-status-history-age:336h enable-os-upgrade:true snap-store-proxy: image-metadata-url: test-mode:false juju-https-proxy: vpc-id: image-stream:released]
+10:59:23 INFO  juju.provider.ec2 provider.go:39 opening model "controller"
+10:59:23 INFO  cmd bootstrap.go:677 Creating Juju controller "aws-us-west-1" on aws/us-west-1
+10:59:24 INFO  juju.cmd.juju.commands bootstrap.go:746 combined bootstrap constraints: 
+10:59:24 DEBUG juju.environs.bootstrap bootstrap.go:262 model "controller" supports application/machine networks: true
+10:59:24 DEBUG juju.environs.bootstrap bootstrap.go:264 network management by juju enabled: true
+10:59:24 INFO  cmd bootstrap.go:296 Loading image metadata
+10:59:24 DEBUG juju.environs imagemetadata.go:112 obtained image datasource "default cloud images"
+10:59:24 DEBUG juju.environs imagemetadata.go:112 obtained image datasource "default ubuntu cloud images"
+10:59:24 DEBUG juju.environs.bootstrap bootstrap.go:775 constraints for image metadata lookup &{{{us-west-1 https://ec2.us-west-1.amazonaws.com} [precise yakkety disco bionic cosmic eoan win2008r2 win2012r2 saucy zesty win2012hvr2 opensuseleap genericlinux raring win2012 win7 trusty vivid wily xenial artful win2012hv win2016 win2016hv win2016nano win81 utopic win8 win10 centos7 quantal] [amd64 i386 armhf arm64 ppc64el s390x] released}}
+10:59:25 DEBUG juju.environs.bootstrap bootstrap.go:787 found 1 image metadata in default cloud images
+10:59:30 DEBUG juju.environs.bootstrap bootstrap.go:787 found 106 image metadata in default ubuntu cloud images
+10:59:30 DEBUG juju.environs.bootstrap bootstrap.go:791 found 107 image metadata from all image data sources
+10:59:30 INFO  cmd bootstrap.go:373 Looking for packaged Juju agent version 2.6.6 for amd64
+10:59:30 INFO  juju.environs.bootstrap tools.go:72 looking for bootstrap agent binaries: version=2.6.6
+10:59:30 DEBUG juju.environs.tools tools.go:102 finding agent binaries in stream: "released"
+10:59:30 DEBUG juju.environs.tools tools.go:104 reading agent binaries with major.minor version 2.6
+10:59:30 DEBUG juju.environs.tools tools.go:112 filtering agent binaries by version: 2.6.6
+10:59:30 DEBUG juju.environs.tools tools.go:115 filtering agent binaries by series: bionic
+10:59:30 DEBUG juju.environs.tools tools.go:118 filtering agent binaries by architecture: amd64
+10:59:30 DEBUG juju.environs.tools urls.go:116 trying datasource "keystone catalog"
+10:59:30 DEBUG juju.environs.simplestreams simplestreams.go:683 using default candidate for content id "com.ubuntu.juju:released:tools" are {20161007 mirrors:1.0 content-download streams/v1/cpc-mirrors.sjson []}
+10:59:30 DEBUG juju.environs.simplestreams simplestreams.go:544 using mirrored products path: https:/juju-dist.s3.amazonaws.com/tools/streams/v1/com.ubuntu.juju-released-tools.sjson
+10:59:31 INFO  juju.environs.bootstrap tools.go:74 found 1 packaged agent binaries
+10:59:31 INFO  cmd bootstrap.go:467 Starting new instance for initial controller
+10:59:31 INFO  cmd bootstrap.go:161 Launching controller instance(s) on aws/us-west-1...
+10:59:32 DEBUG juju.provider.ec2 environ.go:228 availability zones: &{RequestId:6c1d9a32-845e-4e0a-bac1-875483ddaf9d Zones:[{AvailabilityZone:{Name:us-west-1a Region:us-west-1} State:available MessageSet:[]} {AvailabilityZone:{Name:us-west-1b Region:us-west-1} State:available MessageSet:[]}]}
+ - Verifying availability zone10:59:32 DEBUG juju.provider.ec2 image.go:45 received 3 image(s)
+10:59:32 DEBUG juju.provider.ec2 image.go:20 images by storage type map[instance:[&imagemetadata.ImageMetadata{Id:"ami-088482adba84f2213", Storage:"instance", VirtType:"hvm", Arch:"amd64", Version:"18.04", RegionAlias:"us-west-1", RegionName:"us-west-1", Endpoint:"https://ec2.us-west-1.amazonaws.com", Stream:""}] ssd:[&imagemetadata.ImageMetadata{Id:"ami-08fd8ae3806f09a08", Storage:"ssd", VirtType:"hvm", Arch:"amd64", Version:"18.04", RegionAlias:"us-west-1", RegionName:"us-west-1", Endpoint:"https://ec2.us-west-1.amazonaws.com", Stream:""} &imagemetadata.ImageMetadata{Id:"ami-094b166ca15928612", Storage:"ssd", VirtType:"hvm", Arch:"arm64", Version:"18.04", RegionAlias:"us-west-1", RegionName:"us-west-1", Endpoint:"https://ec2.us-west-1.amazonaws.com", Stream:""}]]
+10:59:32 DEBUG juju.provider.ec2 image.go:26 filtering storage types [ssd ebs]
+10:59:32 DEBUG juju.provider.ec2 image.go:50 found 2 suitable image(s)
+10:59:32 DEBUG juju.environs.instances image.go:64 instance constraints {region: us-west-1, series: bionic, arches: [amd64], constraints: mem=3584M, storage: [ssd ebs]}
+10:59:32 DEBUG juju.environs.instances image.go:70 matching constraints {region: us-west-1, series: bionic, arches: [amd64], constraints: mem=3584M, storage: [ssd ebs]} against possible image metadata [{Id:ami-08fd8ae3806f09a08 Arch:amd64 VirtType:hvm} {Id:ami-094b166ca15928612 Arch:arm64 VirtType:hvm}]
+10:59:32 INFO  juju.environs.instances image.go:106 find instance - using image with id: ami-08fd8ae3806f09a08
+10:59:32 DEBUG juju.cloudconfig.instancecfg instancecfg.go:887 Setting numa ctl preference to false
+ - Making user data10:59:32 DEBUG juju.service discovery.go:64 discovered init system "systemd" from series "bionic"
+10:59:32 DEBUG juju.provider.ec2 environ.go:508 ec2 user data; 2771 bytes
+ - Setting up groups10:59:32 DEBUG juju.provider.ec2 environ.go:1836 created security group "juju-d6f7f735-1705-4897-896e-d397b565fe35" with ID "sg-0df9ae753f5ec6602"
+10:59:32 DEBUG juju.provider.ec2 environ.go:1836 created security group "juju-d6f7f735-1705-4897-896e-d397b565fe35-0" with ID "sg-05398e8b3785f60a4"
+ - Trying to start instance in availability zone "us-west-1a" - Start instance attempt 110:59:34 INFO  juju.provider.ec2 environ.go:625 started instance "i-030f8e779a9dfaf46" in AZ "us-west-1a"
+10:59:39 INFO  cmd bootstrap.go:235  - i-030f8e779a9dfaf46 (arch=amd64 mem=4G cores=2)
+10:59:39 INFO  juju.environs.bootstrap bootstrap.go:805 newest version: 2.6.6
+10:59:39 INFO  juju.environs.bootstrap bootstrap.go:820 picked bootstrap agent binary version: 2.6.6
+10:59:39 INFO  cmd bootstrap.go:509 Installing Juju agent on bootstrap instance
+10:59:41 INFO  cmd bootstrap.go:626 Fetching Juju GUI 2.14.0
+10:59:41 DEBUG juju.cloudconfig.instancecfg instancecfg.go:887 Setting numa ctl preference to false
+Waiting for address
+Attempting to connect to 172.31.12.131:22
+Attempting to connect to 13.52.187.12:22
+11:00:06 DEBUG juju.provider.common bootstrap.go:576 connection attempt for 13.52.187.12 failed: ssh: connect to host 13.52.187.12 port 22: Connection refused
+11:00:13 DEBUG juju.provider.common bootstrap.go:576 connection attempt for 13.52.187.12 failed: /var/lib/juju/nonce.txt does not exist
+11:00:20 INFO  cmd bootstrap.go:345 Connected to 13.52.187.12
+11:00:20 INFO  juju.cloudconfig userdatacfg_unix.go:529 Fetching agent: curl -sSfw 'agent binaries from %{url_effective} downloaded: HTTP %{http_code}; time %{time_total}s; size %{size_download} bytes; speed %{speed_download} bytes/s ' --retry 10 -o $bin/tools.tar.gz <[https://juju-dist.s3.amazonaws.com/tools/agent/2.6.6/juju-2.6.6-ubuntu-amd64.tgz]>
+11:00:20 INFO  cmd bootstrap.go:415 Running machine configuration script...
+11:01:12 INFO  cmd bootstrap.go:564 Bootstrap agent now started
+11:01:12 INFO  juju.juju api.go:303 API endpoints changed from [] to [13.52.187.12:17070 172.31.12.131:17070]
+11:01:12 INFO  cmd controller.go:89 Contacting Juju controller at 13.52.187.12 to verify accessibility...
+11:01:12 INFO  juju.juju api.go:67 connecting to API addresses: [13.52.187.12:17070 172.31.12.131:17070]
+11:01:14 DEBUG juju.api apiclient.go:1092 successfully dialed "wss://13.52.187.12:17070/model/d0eaa326-afdb-4862-82de-17738a188d77/api"
+11:01:14 INFO  juju.api apiclient.go:624 connection established to "wss://13.52.187.12:17070/model/d0eaa326-afdb-4862-82de-17738a188d77/api"
+11:01:14 DEBUG juju.api monitor.go:35 RPC connection died
+11:01:14 INFO  cmd controller.go:100 
+Bootstrap complete, controller "aws-us-west-1" now is available
+Controller machines are in the "controller" model
+11:01:14 INFO  cmd bootstrap.go:480 Initial model "default" added
+11:01:14 INFO  cmd supercommand.go:502 command finished
+Added 'cdk-aws' model on aws/us-west-1 with credential 'admin' for user 'admin'
+Resolving charm: cs:apache2
+Resolving charm: cs:~containers/aws-integrator
+Resolving charm: cs:canonical-livepatch
+Resolving charm: cs:~containers/docker
+Resolving charm: cs:~containers/easyrsa
+Resolving charm: cs:elasticsearch
+Resolving charm: cs:etcd
+Resolving charm: cs:filebeat
+Resolving charm: cs:~containers/flannel
+Resolving charm: cs:~prometheus-charmers/grafana
+Resolving charm: cs:graylog
+Resolving charm: cs:~containers/kubeapi-load-balancer
+Resolving charm: cs:~containers/kubernetes-e2e
+Resolving charm: cs:~containers/kubernetes-master
+Resolving charm: cs:~containers/kubernetes-worker
+Resolving charm: cs:mongodb
+Resolving charm: cs:nagios
+Resolving charm: cs:nrpe
+Resolving charm: cs:prometheus2
+Resolving charm: cs:telegraf
+Executing changes:
+- upload charm cs:apache2-26 for series bionic
+- deploy application apache2 on bionic using cs:apache2-26
+- expose apache2
+- set annotations for apache2
+- upload charm cs:~containers/aws-integrator-10 for series bionic
+- deploy application aws-integrator on bionic using cs:~containers/aws-integrator-10
+  added resource aws-cli
+- set annotations for aws-integrator
+- upload charm cs:canonical-livepatch-32 for series bionic
+- deploy application canonical-livepatch on bionic using cs:canonical-livepatch-32
+- set annotations for canonical-livepatch
+- upload charm cs:~containers/docker-1 for series bionic
+- deploy application docker on bionic using cs:~containers/docker-1
+- set annotations for docker
+- upload charm cs:~containers/easyrsa-254 for series bionic
+- deploy application easyrsa on bionic using cs:~containers/easyrsa-254
+  added resource easyrsa
+- set annotations for easyrsa
+- upload charm cs:elasticsearch-37 for series bionic
+- deploy application elasticsearch on bionic using cs:elasticsearch-37
+- set annotations for elasticsearch
+- upload charm cs:etcd-434 for series bionic
+- deploy application etcd on bionic using cs:etcd-434
+  added resource core
+  added resource etcd
+  added resource snapshot
+- set annotations for etcd
+- upload charm cs:filebeat-24 for series bionic
+- deploy application filebeat on bionic using cs:filebeat-24
+- set annotations for filebeat
+- upload charm cs:~containers/flannel-425 for series bionic
+- deploy application flannel on bionic using cs:~containers/flannel-425
+  added resource flannel-amd64
+  added resource flannel-arm64
+  added resource flannel-s390x
+- set annotations for flannel
+- upload charm cs:~prometheus-charmers/grafana-33 for series bionic
+- deploy application grafana on bionic using cs:~prometheus-charmers/grafana-33
+- expose grafana
+- set annotations for grafana
+- upload charm cs:graylog-32 for series bionic
+- deploy application graylog on bionic using cs:graylog-32
+  added resource core
+  added resource graylog
+- set annotations for graylog
+- upload charm cs:~containers/kubeapi-load-balancer-649 for series bionic
+- deploy application kubeapi-load-balancer on bionic using cs:~containers/kubeapi-load-balancer-649
+- expose kubeapi-load-balancer
+- set annotations for kubeapi-load-balancer
+- upload charm cs:~containers/kubernetes-e2e-669 for series bionic
+- deploy application kubernetes-e2e on bionic using cs:~containers/kubernetes-e2e-669
+  added resource core
+  added resource kubectl
+  added resource kubernetes-test
+- set annotations for kubernetes-e2e
+- upload charm cs:~containers/kubernetes-master-700 for series bionic
+- deploy application kubernetes-master on bionic using cs:~containers/kubernetes-master-700
+  added resource cdk-addons
+  added resource core
+  added resource kube-apiserver
+  added resource kube-controller-manager
+  added resource kube-proxy
+  added resource kube-scheduler
+  added resource kubectl
+- set annotations for kubernetes-master
+- upload charm cs:~containers/kubernetes-worker-552 for series bionic
+- deploy application kubernetes-worker on bionic using cs:~containers/kubernetes-worker-552
+  added resource cni-amd64
+  added resource cni-arm64
+  added resource cni-s390x
+  added resource core
+  added resource kube-proxy
+  added resource kubectl
+  added resource kubelet
+- expose kubernetes-worker
+- set annotations for kubernetes-worker
+- upload charm cs:mongodb-52 for series bionic
+- deploy application mongodb on bionic using cs:mongodb-52
+- set annotations for mongodb
+- upload charm cs:nagios-33 for series bionic
+- deploy application nagios on bionic using cs:nagios-33
+- set annotations for nagios
+- upload charm cs:nrpe-58 for series bionic
+- deploy application nrpe on bionic using cs:nrpe-58
+- set annotations for nrpe
+- upload charm cs:prometheus2-10 for series bionic
+- deploy application prometheus on bionic using cs:prometheus2-10
+  added resource core
+  added resource prometheus
+- set annotations for prometheus
+- upload charm cs:telegraf-29 for series bionic
+- deploy application telegraf on bionic using cs:telegraf-29
+- set annotations for telegraf
+- add relation kubernetes-master:kube-api-endpoint - kubeapi-load-balancer:apiserver
+- add relation kubernetes-master:loadbalancer - kubeapi-load-balancer:loadbalancer
+- add relation kubernetes-master:kube-control - kubernetes-worker:kube-control
+- add relation kubernetes-master:certificates - easyrsa:client
+- add relation etcd:certificates - easyrsa:client
+- add relation kubernetes-master:etcd - etcd:db
+- add relation kubernetes-worker:certificates - easyrsa:client
+- add relation kubernetes-worker:kube-api-endpoint - kubeapi-load-balancer:website
+- add relation kubeapi-load-balancer:certificates - easyrsa:client
+- add relation flannel:etcd - etcd:db
+- add relation flannel:cni - kubernetes-master:cni
+- add relation flannel:cni - kubernetes-worker:cni
+- add relation apache2:reverseproxy - graylog:website
+- add relation graylog:elasticsearch - elasticsearch:client
+- add relation graylog:mongodb - mongodb:database
+- add relation filebeat:beats-host - kubernetes-master:juju-info
+- add relation filebeat:beats-host - kubernetes-worker:juju-info
+- add relation filebeat:logstash - graylog:beats
+- add relation prometheus:grafana-source - grafana:grafana-source
+- add relation telegraf:prometheus-client - prometheus:target
+- add relation kubernetes-master:juju-info - telegraf:juju-info
+- add relation kubernetes-worker:juju-info - telegraf:juju-info
+- add relation canonical-livepatch - etcd
+- add relation canonical-livepatch - kubernetes-master
+- add relation canonical-livepatch - kubernetes-worker
+- add relation docker - kubernetes-master
+- add relation docker - kubernetes-worker
+- add relation nrpe:general-info - easyrsa:juju-info
+- add relation nrpe:general-info - kubernetes-master:juju-info
+- add relation nrpe:general-info - kubernetes-worker:juju-info
+- add relation nrpe:monitors - nagios:monitors
+- add relation aws-integrator - kubernetes-master
+- add relation aws-integrator - kubernetes-worker
+- add relation kubernetes-master:kube-control - kubernetes-e2e:kube-control
+- add relation kubernetes-master:kube-api-endpoint - kubernetes-e2e:kubernetes-master
+- add relation kubernetes-e2e:certificates - easyrsa:client
+- add unit apache2/0 to new machine 0
+- add unit aws-integrator/0 to new machine 1
+- add unit easyrsa/0 to new machine 2
+- add unit elasticsearch/0 to new machine 3
+- add unit etcd/0 to new machine 4
+- add unit etcd/1 to new machine 5
+- add unit etcd/2 to new machine 6
+- add unit grafana/0 to new machine 7
+- add unit graylog/0 to new machine 8
+- add unit kubeapi-load-balancer/0 to new machine 9
+- add unit kubernetes-e2e/0 to new machine 10
+- add unit kubernetes-master/0 to new machine 11
+- add unit kubernetes-master/1 to new machine 12
+- add unit kubernetes-worker/0 to new machine 13
+- add unit kubernetes-worker/1 to new machine 14
+- add unit kubernetes-worker/2 to new machine 15
+- add unit mongodb/0 to new machine 16
+- add unit nagios/0 to new machine 17
+- add unit prometheus/0 to new machine 18
+Deploy of bundle completed.
+WARNING the configuration setting "enable-dashboard-addons" already has the value "true"
+WARNING the configuration setting "ingress" already has the value "true"
+Starting to serve on 127.0.0.1:8001
+ERROR cannot set and retrieve values simultaneously
+unit-grafana-0:
+  id: 9b8a98c3-cfad-40ed-8b9e-b0d202c15543
+  status: completed
+  timing:
+    completed: 2019-08-05 18:28:00 +0000 UTC
+    enqueued: 2019-08-05 18:27:59 +0000 UTC
+    started: 2019-08-05 18:27:59 +0000 UTC
+  unit: grafana/0
+unit-grafana-0:
+  id: 4c337430-753d-4f1f-8422-7aaf58d54c14
+  status: completed
+  timing:
+    completed: 2019-08-05 18:28:03 +0000 UTC
+    enqueued: 2019-08-05 18:28:01 +0000 UTC
+    started: 2019-08-05 18:28:02 +0000 UTC
+  unit: grafana/0
+
+k8s substrate "juju-cluster" added as cloud "k8s-aws" with EBS Volume default storage provisioned
+by the existing "default" storage class.
+Added 'k8s-gitlab-aws' model on k8s-aws/us-west-1 with credential 'admin' for user 'admin'
+persistentvolume/op1 created
+persistentvolume/vol1 created
+persistentvolume/vol2 created
+Resolving charm: cs:~juju/gitlab-k8s
+Resolving charm: cs:~juju/mariadb-k8s
+Executing changes:
+- upload charm cs:~juju/gitlab-k8s-1 for series kubernetes
+- deploy application gitlab-k8s with 1 unit on kubernetes using cs:~juju/gitlab-k8s-1
+  added resource gitlab_image
+- expose gitlab-k8s
+- upload charm cs:~juju/mariadb-k8s-1 for series kubernetes
+- deploy application mariadb-k8s with 2 units on kubernetes using cs:~juju/mariadb-k8s-1
+  added resource mysql_image
+- add relation gitlab-k8s:mysql - mariadb-k8s:server
+Deploy of bundle completed.

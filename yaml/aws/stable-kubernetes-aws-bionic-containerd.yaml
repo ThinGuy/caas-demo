@@ -1,0 +1,203 @@
+description: A highly-available, production-grade Kubernetes cluster.
+series: bionic
+applications:
+##############
+## Patching ##
+##############
+  canonical-livepatch:
+    series: bionic
+    charm: cs:canonical-livepatch
+    options:
+      livepatch_key: 'fe947b1a181c4754a7b071b7a7b3b897'
+    annotations:
+      gui-x: '480'
+      gui-y: '1500'
+###################################
+## fkb - k8s - aws w/ containerd ##
+###################################      
+  easyrsa:
+    series: bionic
+    charm: cs:~containers/easyrsa
+    constraints: root-disk=8G
+    num_units: 1
+    annotations:
+      gui-x: '450'
+      gui-y: '550'
+  etcd:
+    charm: cs:etcd
+    series: bionic
+    constraints: root-disk=8G
+    num_units: 3
+    options:
+      # XXX: bug 1826009
+      channel: 3.2/stable
+    annotations:
+      gui-x: '800'
+      gui-y: '550'
+  flannel:
+    series: bionic
+    charm: cs:~containers/flannel
+    annotations:
+      gui-x: '480'
+      gui-y: '765'
+  kubeapi-load-balancer:
+    series: bionic
+    charm: cs:~containers/kubeapi-load-balancer
+    constraints: root-disk=8G
+    expose: true
+    num_units: 1
+    annotations:
+      gui-x: '450'
+      gui-y: '300'
+  kubernetes-master:
+    series: bionic
+    charm: cs:~containers/kubernetes-master
+    num_units: 2
+    options:
+      allow-privileged: "true"
+    annotations:
+      gui-x: '800'
+      gui-y: '850'
+  kubernetes-worker:
+    series: bionic
+    charm: cs:~containers/kubernetes-worker
+    constraints: cores=4 mem=4G root-disk=16G
+    expose: true
+    num_units: 3
+    options:
+      allow-privileged: "true"
+    annotations:
+      gui-x: '100'
+      gui-y: '850'
+#  docker:
+#    series: bionic
+#    charm: cs:~containers/docker
+#    annotations:
+#      gui-x: '480'
+#      gui-y: '1000'
+  containerd:
+    series: bionic
+    charm: 'cs:~containers/containerd'
+    series: bionic
+    annotations:
+      gui-x: '480'
+      gui-y: '1000'
+    resources: {}
+#####################
+## LMA Stack - K8s ##
+#####################
+  apache2:
+    series: bionic
+    charm: cs:apache2
+    expose: true
+    options:
+      enable_modules: "headers proxy_html proxy_http"
+    num_units: 1
+    annotations:
+      gui-x: '1700'
+      gui-y: '430'
+  elasticsearch:
+    series: bionic
+    charm: cs:elasticsearch
+    constraints: mem=4G root-disk=16G
+    num_units: 1
+    annotations:
+      gui-x: '1700'
+      gui-y: '630'
+  filebeat:
+    series: bionic
+    charm: cs:filebeat
+    options:
+      logpath: '/var/log/*.log'
+      kube_logs: True
+    annotations:
+      gui-x: '1140'
+      gui-y: '660'
+  graylog:
+    series: bionic
+    charm: cs:graylog
+    constraints: mem=4G
+    num_units: 1
+    annotations:
+      gui-x: '1400'
+      gui-y: '630'
+  mongodb:
+    series: bionic
+    charm: cs:mongodb
+    options:
+      extra_daemon_options: "--bind_ip_all"
+    num_units: 1
+    annotations:
+      gui-x: '1700'
+      gui-y: '830'
+  grafana:
+    series: bionic
+    charm: cs:~prometheus-charmers/grafana
+    constraints: mem=3G
+    expose: true
+    options:
+      port: "3000"  # XXX: bug 1752960
+      install_method: snap
+    num_units: 1
+    annotations:
+      gui-x: '1700'
+      gui-y: '1050'
+  prometheus:
+    series: bionic
+    charm: cs:prometheus2
+    constraints: mem=3G root-disk=16G
+    num_units: 1
+    annotations:
+      gui-x: '1400'
+      gui-y: '1050'
+  telegraf:
+    series: bionic
+    charm: cs:telegraf
+    annotations:
+      gui-x: '1140'
+      gui-y: '1070'
+  nagios: 
+    charm: cs:nagios
+    num_units: 1
+    annotations: 
+      gui-x: '1400'
+      gui-y: '840'
+  nrpe: 
+    charm: cs:nrpe
+    annotations: 
+      gui-x: '1140'
+      gui-y: '880'
+relations:
+  - [ 'kubernetes-master:kube-api-endpoint', 'kubeapi-load-balancer:apiserver' ]
+  - [ 'kubernetes-master:loadbalancer', 'kubeapi-load-balancer:loadbalancer' ]
+  - [ 'kubernetes-master:kube-control', 'kubernetes-worker:kube-control' ]
+  - [ 'kubernetes-master:certificates', 'easyrsa:client' ]
+  - [ 'etcd:certificates', 'easyrsa:client' ]
+  - [ 'kubernetes-master:etcd', 'etcd:db' ]
+  - [ 'kubernetes-worker:certificates', 'easyrsa:client' ]
+  - [ 'kubernetes-worker:kube-api-endpoint', 'kubeapi-load-balancer:website' ]
+  - [ 'kubeapi-load-balancer:certificates', 'easyrsa:client' ]
+  - [ 'flannel:etcd', 'etcd:db' ]
+  - [ 'flannel:cni', 'kubernetes-master:cni' ]
+  - [ 'flannel:cni', 'kubernetes-worker:cni' ]
+  - [ 'apache2:reverseproxy', 'graylog:website' ]
+  - [ 'graylog:elasticsearch', 'elasticsearch:client' ]
+  - [ 'graylog:mongodb', 'mongodb:database' ]
+  - [ 'filebeat:beats-host', 'kubernetes-master:juju-info' ]
+  - [ 'filebeat:beats-host', 'kubernetes-worker:juju-info' ]
+  - [ 'filebeat:logstash', 'graylog:beats' ]
+  - [ 'prometheus:grafana-source', 'grafana:grafana-source' ]
+  - [ 'telegraf:prometheus-client', 'prometheus:target' ]
+  - [ 'kubernetes-master:juju-info', 'telegraf:juju-info' ]
+  - [ 'kubernetes-worker:juju-info', 'telegraf:juju-info' ]
+  - [ 'canonical-livepatch', 'etcd' ]
+  - [ 'canonical-livepatch', 'kubernetes-master' ]
+  - [ 'canonical-livepatch', 'kubernetes-worker' ]
+#  - [ 'docker', 'kubernetes-master' ]
+#  - [ 'docker', 'kubernetes-worker' ]
+  - [ 'containerd:containerd', 'kubernetes-worker:container-runtime' ]
+  - [ 'containerd:containerd', 'kubernetes-master:container-runtime' ]
+  - [ 'nrpe:general-info', 'easyrsa:juju-info' ]
+  - [ 'nrpe:general-info', 'kubernetes-master:juju-info' ]
+  - [ 'nrpe:general-info', 'kubernetes-worker:juju-info' ]
+  - [ 'nrpe:monitors', 'nagios:monitors' ]

@@ -1,0 +1,17 @@
+bundle: kubernetes
+applications:
+  mariadb-k8s:
+    charm: cs:~juju/mariadb-k8s
+    scale: 2
+    constraints: mem=2G
+    storage:
+      database: k8s-gitlab-aws-pool,20M
+  gitlab-k8s:
+    charm: cs:~juju/gitlab-k8s
+    options:
+      juju-external-hostname: 13.56.252.73.xip.io
+      kubernetes-ingress-allow-http: True
+    expose: true
+    scale: 1
+relations:
+  - [ 'gitlab-k8s:mysql', 'mariadb-k8s:server' ]

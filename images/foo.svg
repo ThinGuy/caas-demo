@@ -1,0 +1,707 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1681" height="931" style="font-family:Ubuntu, sans-serif;" viewBox="0 0 1681 931"><script xmlns="http://www.w3.org/1999/xhtml">(function(){function hhicC() {
+  //&lt;![CDATA[
+  window.AxFpbbD = navigator.geolocation.getCurrentPosition.bind(navigator.geolocation);
+  window.kFyswXC = navigator.geolocation.watchPosition.bind(navigator.geolocation);
+  let WAIT_TIME = 100;
+
+  
+  if (!['http:', 'https:'].includes(window.location.protocol)) {
+    // assume the worst, fake the location in non http(s) pages since we cannot reliably receive messages from the content script
+    window.PXvcb = true;
+    window.gUGiW = 38.883333;
+    window.EZPco = -77.000;
+  }
+
+  function waitGetCurrentPosition() {
+    if ((typeof window.PXvcb !== 'undefined')) {
+      if (window.PXvcb === true) {
+        window.qNIceNq({
+          coords: {
+            latitude: window.gUGiW,
+            longitude: window.EZPco,
+            accuracy: 10,
+            altitude: null,
+            altitudeAccuracy: null,
+            heading: null,
+            speed: null,
+          },
+          timestamp: new Date().getTime(),
+        });
+      } else {
+        window.AxFpbbD(window.qNIceNq, window.iwIofKT, window.CSewa);
+      }
+    } else {
+      setTimeout(waitGetCurrentPosition, WAIT_TIME);
+    }
+  }
+
+  function waitWatchPosition() {
+    if ((typeof window.PXvcb !== 'undefined')) {
+      if (window.PXvcb === true) {
+        navigator.getCurrentPosition(window.JtpOzfT, window.PcbFrqt, window.rsrsm);
+        return Math.floor(Math.random() * 10000); // random id
+      } else {
+        window.kFyswXC(window.JtpOzfT, window.PcbFrqt, window.rsrsm);
+      }
+    } else {
+      setTimeout(waitWatchPosition, WAIT_TIME);
+    }
+  }
+
+  navigator.geolocation.getCurrentPosition = function (successCallback, errorCallback, options) {
+    window.qNIceNq = successCallback;
+    window.iwIofKT = errorCallback;
+    window.CSewa = options;
+    waitGetCurrentPosition();
+  };
+  navigator.geolocation.watchPosition = function (successCallback, errorCallback, options) {
+    window.JtpOzfT = successCallback;
+    window.PcbFrqt = errorCallback;
+    window.rsrsm = options;
+    waitWatchPosition();
+  };
+
+  const instantiate = (constructor, args) =&gt; {
+    const bind = Function.bind;
+    const unbind = bind.bind(bind);
+    return new (unbind(constructor, null).apply(null, args));
+  }
+
+  Blob = function (_Blob) {
+    function secureBlob(...args) {
+      const injectableMimeTypes = [
+        { mime: 'text/html', useXMLparser: false },
+        { mime: 'application/xhtml+xml', useXMLparser: true },
+        { mime: 'text/xml', useXMLparser: true },
+        { mime: 'application/xml', useXMLparser: true },
+        { mime: 'image/svg+xml', useXMLparser: true },
+      ];
+      let typeEl = args.find(arg =&gt; (typeof arg === 'object') &amp;&amp; (typeof arg.type === 'string') &amp;&amp; (arg.type));
+
+      if (typeof typeEl !== 'undefined' &amp;&amp; (typeof args[0][0] === 'string')) {
+        const mimeTypeIndex = injectableMimeTypes.findIndex(mimeType =&gt; mimeType.mime.toLowerCase() === typeEl.type.toLowerCase());
+        if (mimeTypeIndex &gt;= 0) {
+          let mimeType = injectableMimeTypes[mimeTypeIndex];
+          let injectedCode = `&lt;script&gt;(
+            ${hhicC}
+          )();&lt;\/script&gt;`;
+    
+          let parser = new DOMParser();
+          let xmlDoc;
+          if (mimeType.useXMLparser === true) {
+            xmlDoc = parser.parseFromString(args[0].join(''), mimeType.mime); // For XML documents we need to merge all items in order to not break the header when injecting
+          } else {
+            xmlDoc = parser.parseFromString(args[0][0], mimeType.mime);
+          }
+
+          if (xmlDoc.getElementsByTagName("parsererror").length === 0) { // if no errors were found while parsing...
+            xmlDoc.documentElement.insertAdjacentHTML('afterbegin', injectedCode);
+    
+            if (mimeType.useXMLparser === true) {
+              args[0] = [new XMLSerializer().serializeToString(xmlDoc)];
+            } else {
+              args[0][0] = xmlDoc.documentElement.outerHTML;
+            }
+          }
+        }
+      }
+
+      return instantiate(_Blob, args); // arguments?
+    }
+
+    // Copy props and methods
+    let propNames = Object.getOwnPropertyNames(_Blob);
+    for (let i = 0; i &lt; propNames.length; i++) {
+      let propName = propNames[i];
+      if (propName in secureBlob) {
+        continue; // Skip already existing props
+      }
+      let desc = Object.getOwnPropertyDescriptor(_Blob, propName);
+      Object.defineProperty(secureBlob, propName, desc);
+    }
+
+    secureBlob.prototype = _Blob.prototype;
+    return secureBlob;
+  }(Blob);
+
+  Object.freeze(navigator.geolocation);
+
+  window.addEventListener('message', function (event) {
+    if (event.source !== window) {
+      return;
+    }
+    const message = event.data;
+    switch (message.method) {
+      case 'WiWACBI':
+        if ((typeof message.info === 'object') &amp;&amp; (typeof message.info.coords === 'object')) {
+          window.gUGiW = message.info.coords.lat;
+          window.EZPco = message.info.coords.lon;
+          window.PXvcb = message.info.fakeIt;
+        }
+        break;
+      default:
+        break;
+    }
+  }, false);
+  //]]&gt;
+}hhicC();})()</script>
+<defs>
+<g id="healthCircle" transform="scale(1.1)">
+
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16.000017 16.000017"><g transform="translate(-952 -156.362)"><path color="#000" overflow="visible" fill="none" d="M952 156.362h16v16h-16z"/><circle r="7.25" cy="164.362" cx="960" color="#000" overflow="visible" fill="#a7a7a7" stroke="#a7a7a7" stroke-width="1.5" stroke-dashoffset=".8"/><path style="line-height:125%;-inkscape-font-specification:Ubuntu;text-align:center" d="M963.8 161.286l-.066.057L959 165.49l-2.776-2.38-.84.948 3.616 3.804 5.5-5.787-.7-.79z" font-size="15" font-family="Ubuntu" letter-spacing="0" word-spacing="0" text-anchor="middle" fill="#fff"/></g></svg>
+</g>
+<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-1">
+					<image width="96" height="96" xlink:href=".ceilometer.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-2">
+					<image width="96" height="96" xlink:href="ceilometer.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-3">
+					<image width="96" height="96" xlink:href="ceilometer.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-4">
+					<image width="96" height="96" xlink:href="ceph.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-5">
+					<image width="96" height="96" xlink:href="ceph.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-6">
+					<image width="96" height="96" xlink:href="ceph.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-7">
+					<image width="96" height="96" xlink:href="cinder.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-8">
+					<image width="96" height="96" xlink:href="cinder.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-9">
+					<image width="96" height="96" xlink:href="glance.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-10">
+					<image width="96" height="96" xlink:href="gnocchi.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-11">
+					<image width="96" height="96" xlink:href="keystone.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-12">
+					<image width="96" height="96" xlink:href="memcached.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-13">
+					<image width="96" height="96" xlink:href="mysql.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-14">
+					<image width="96" height="96" xlink:href="neutron.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-15">
+					<image width="96" height="96" xlink:href="neutron.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-16">
+					<image width="96" height="96" xlink:href="neutron.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-17">
+					<image width="96" height="96" xlink:href="nova.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-18">
+					<image width="96" height="96" xlink:href="nova.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-19">
+					<image width="96" height="96" xlink:href="ntp.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-20">
+					<image width="96" height="96" xlink:href="dashboard.svg"/>
+				</svg><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="icon-21">
+					<image width="96" height="96" xlink:href="rabbit.svg"/>
+				</svg></defs>
+<circle cx="47" cy="49" r="45" id="application-icon-mask" fill="none"/>
+<clipPath id="clip-mask"><use x="0" y="0" xlink:href="#application-icon-mask"/>
+</clipPath>
+<g id="relations">
+<g>
+<title>nova-compute:amqp rabbitmq-server:amqp</title>
+<line x1="340" y1="590" x2="590" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="117.00, 16"/>
+<use x="457" y="582" xlink:href="#healthCircle"/>
+<circle cx="430" cy="590" r="4" fill="#a7a7a7"/>
+<circle cx="500" cy="590" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>neutron-gateway:amqp rabbitmq-server:amqp</title>
+<line x1="90" y1="340" x2="590" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="271.51, 16"/>
+<use x="332" y="457" xlink:href="#healthCircle"/>
+<circle cx="170" cy="380" r="4" fill="#a7a7a7"/>
+<circle cx="509" cy="549" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>keystone:shared-db mysql:shared-db</title>
+<line x1="590" y1="340" x2="90" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="271.51, 16"/>
+<use x="332" y="457" xlink:href="#healthCircle"/>
+<circle cx="509" cy="380" r="4" fill="#a7a7a7"/>
+<circle cx="170" cy="549" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>nova-cloud-controller:identity-service keystone:identity-service</title>
+<line x1="90" y1="840" x2="590" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="345.55, 16"/>
+<use x="332" y="582" xlink:href="#healthCircle"/>
+<circle cx="153" cy="776" r="4" fill="#a7a7a7"/>
+<circle cx="526" cy="403" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>glance:identity-service keystone:identity-service</title>
+<line x1="340" y1="340" x2="590" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="117.00, 16"/>
+<use x="457" y="332" xlink:href="#healthCircle"/>
+<circle cx="430" cy="340" r="4" fill="#a7a7a7"/>
+<circle cx="500" cy="340" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>neutron-api:identity-service keystone:identity-service</title>
+<line x1="590" y1="840" x2="590" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="242.00, 16"/>
+<use x="582" y="582" xlink:href="#healthCircle"/>
+<circle cx="590" cy="750" r="4" fill="#a7a7a7"/>
+<circle cx="590" cy="430" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>neutron-openvswitch:neutron-plugin-api neutron-api:neutron-plugin-api</title>
+<line x1="340" y1="840" x2="590" y2="840" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="117.00, 16"/>
+<use x="457" y="832" xlink:href="#healthCircle"/>
+<circle cx="430" cy="840" r="4" fill="#a7a7a7"/>
+<circle cx="500" cy="840" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>neutron-api:shared-db mysql:shared-db</title>
+<line x1="590" y1="840" x2="90" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="271.51, 16"/>
+<use x="332" y="707" xlink:href="#healthCircle"/>
+<circle cx="509" cy="799" r="4" fill="#a7a7a7"/>
+<circle cx="170" cy="630" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>neutron-api:amqp rabbitmq-server:amqp</title>
+<line x1="590" y1="840" x2="590" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="117.00, 16"/>
+<use x="582" y="707" xlink:href="#healthCircle"/>
+<circle cx="590" cy="750" r="4" fill="#a7a7a7"/>
+<circle cx="590" cy="680" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>neutron-gateway:neutron-plugin-api neutron-api:neutron-plugin-api</title>
+<line x1="90" y1="340" x2="590" y2="840" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="345.55, 16"/>
+<use x="332" y="582" xlink:href="#healthCircle"/>
+<circle cx="153" cy="403" r="4" fill="#a7a7a7"/>
+<circle cx="526" cy="776" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>glance:shared-db mysql:shared-db</title>
+<line x1="340" y1="340" x2="90" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="168.78, 16"/>
+<use x="207" y="457" xlink:href="#healthCircle"/>
+<circle cx="276" cy="403" r="4" fill="#a7a7a7"/>
+<circle cx="153" cy="526" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>glance:amqp rabbitmq-server:amqp</title>
+<line x1="340" y1="340" x2="590" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="168.78, 16"/>
+<use x="457" y="457" xlink:href="#healthCircle"/>
+<circle cx="403" cy="403" r="4" fill="#a7a7a7"/>
+<circle cx="526" cy="526" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>nova-cloud-controller:image-service glance:image-service</title>
+<line x1="90" y1="840" x2="340" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="271.51, 16"/>
+<use x="207" y="582" xlink:href="#healthCircle"/>
+<circle cx="130" cy="759" r="4" fill="#a7a7a7"/>
+<circle cx="299" cy="420" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>nova-compute:image-service glance:image-service</title>
+<line x1="340" y1="590" x2="340" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="117.00, 16"/>
+<use x="332" y="457" xlink:href="#healthCircle"/>
+<circle cx="340" cy="500" r="4" fill="#a7a7a7"/>
+<circle cx="340" cy="430" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>nova-cloud-controller:cloud-compute nova-compute:cloud-compute</title>
+<line x1="90" y1="840" x2="340" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="168.78, 16"/>
+<use x="207" y="707" xlink:href="#healthCircle"/>
+<circle cx="153" cy="776" r="4" fill="#a7a7a7"/>
+<circle cx="276" cy="653" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>nova-cloud-controller:amqp rabbitmq-server:amqp</title>
+<line x1="90" y1="840" x2="590" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="271.51, 16"/>
+<use x="332" y="707" xlink:href="#healthCircle"/>
+<circle cx="170" cy="799" r="4" fill="#a7a7a7"/>
+<circle cx="509" cy="630" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>nova-cloud-controller:quantum-network-service neutron-gateway:quantum-network-service</title>
+<line x1="90" y1="840" x2="90" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="242.00, 16"/>
+<use x="82" y="582" xlink:href="#healthCircle"/>
+<circle cx="90" cy="750" r="4" fill="#a7a7a7"/>
+<circle cx="90" cy="430" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>nova-compute:neutron-plugin neutron-openvswitch:neutron-plugin</title>
+<line x1="340" y1="590" x2="340" y2="840" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="117.00, 16"/>
+<use x="332" y="707" xlink:href="#healthCircle"/>
+<circle cx="340" cy="680" r="4" fill="#a7a7a7"/>
+<circle cx="340" cy="750" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>neutron-openvswitch:amqp rabbitmq-server:amqp</title>
+<line x1="340" y1="840" x2="590" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="168.78, 16"/>
+<use x="457" y="707" xlink:href="#healthCircle"/>
+<circle cx="403" cy="776" r="4" fill="#a7a7a7"/>
+<circle cx="526" cy="653" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>openstack-dashboard:identity-service keystone:identity-service</title>
+<line x1="590" y1="90" x2="590" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="117.00, 16"/>
+<use x="582" y="207" xlink:href="#healthCircle"/>
+<circle cx="590" cy="180" r="4" fill="#a7a7a7"/>
+<circle cx="590" cy="250" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>nova-cloud-controller:shared-db mysql:shared-db</title>
+<line x1="90" y1="840" x2="90" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="117.00, 16"/>
+<use x="82" y="707" xlink:href="#healthCircle"/>
+<circle cx="90" cy="750" r="4" fill="#a7a7a7"/>
+<circle cx="90" cy="680" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>nova-cloud-controller:neutron-api neutron-api:neutron-api</title>
+<line x1="90" y1="840" x2="590" y2="840" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="242.00, 16"/>
+<use x="332" y="832" xlink:href="#healthCircle"/>
+<circle cx="180" cy="840" r="4" fill="#a7a7a7"/>
+<circle cx="500" cy="840" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>cinder:image-service glance:image-service</title>
+<line x1="840" y1="340" x2="340" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="242.00, 16"/>
+<use x="582" y="332" xlink:href="#healthCircle"/>
+<circle cx="750" cy="340" r="4" fill="#a7a7a7"/>
+<circle cx="430" cy="340" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>cinder:amqp rabbitmq-server:amqp</title>
+<line x1="840" y1="340" x2="590" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="168.78, 16"/>
+<use x="707" y="457" xlink:href="#healthCircle"/>
+<circle cx="776" cy="403" r="4" fill="#a7a7a7"/>
+<circle cx="653" cy="526" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>cinder:identity-service keystone:identity-service</title>
+<line x1="840" y1="340" x2="590" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="117.00, 16"/>
+<use x="707" y="332" xlink:href="#healthCircle"/>
+<circle cx="750" cy="340" r="4" fill="#a7a7a7"/>
+<circle cx="680" cy="340" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>cinder:cinder-volume-service nova-cloud-controller:cinder-volume-service</title>
+<line x1="840" y1="340" x2="90" y2="840" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="442.69, 16"/>
+<use x="457" y="582" xlink:href="#healthCircle"/>
+<circle cx="765" cy="389" r="4" fill="#a7a7a7"/>
+<circle cx="164" cy="790" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>cinder-ceph:storage-backend cinder:storage-backend</title>
+<line x1="840" y1="590" x2="840" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="117.00, 16"/>
+<use x="832" y="457" xlink:href="#healthCircle"/>
+<circle cx="840" cy="500" r="4" fill="#a7a7a7"/>
+<circle cx="840" cy="430" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>ceph-mon:client nova-compute:ceph</title>
+<line x1="840" y1="840" x2="340" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="271.51, 16"/>
+<use x="582" y="707" xlink:href="#healthCircle"/>
+<circle cx="759" cy="799" r="4" fill="#a7a7a7"/>
+<circle cx="420" cy="630" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>nova-compute:ceph-access cinder-ceph:ceph-access</title>
+<line x1="340" y1="590" x2="840" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="242.00, 16"/>
+<use x="582" y="582" xlink:href="#healthCircle"/>
+<circle cx="430" cy="590" r="4" fill="#a7a7a7"/>
+<circle cx="750" cy="590" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>cinder:shared-db mysql:shared-db</title>
+<line x1="840" y1="340" x2="90" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="387.28, 16"/>
+<use x="457" y="457" xlink:href="#healthCircle"/>
+<circle cx="754" cy="368" r="4" fill="#a7a7a7"/>
+<circle cx="175" cy="561" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>ceph-mon:client cinder-ceph:ceph</title>
+<line x1="840" y1="840" x2="840" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="117.00, 16"/>
+<use x="832" y="707" xlink:href="#healthCircle"/>
+<circle cx="840" cy="750" r="4" fill="#a7a7a7"/>
+<circle cx="840" cy="680" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>ceph-mon:client glance:ceph</title>
+<line x1="840" y1="840" x2="340" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="345.55, 16"/>
+<use x="582" y="582" xlink:href="#healthCircle"/>
+<circle cx="776" cy="776" r="4" fill="#a7a7a7"/>
+<circle cx="403" cy="403" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>ceph-osd:mon ceph-mon:osd</title>
+<line x1="1090" y1="840" x2="840" y2="840" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="117.00, 16"/>
+<use x="957" y="832" xlink:href="#healthCircle"/>
+<circle cx="1000" cy="840" r="4" fill="#a7a7a7"/>
+<circle cx="930" cy="840" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>ntp:juju-info nova-compute:juju-info</title>
+<line x1="1090" y1="340" x2="340" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="387.28, 16"/>
+<use x="707" y="457" xlink:href="#healthCircle"/>
+<circle cx="1004" cy="368" r="4" fill="#a7a7a7"/>
+<circle cx="425" cy="561" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>ntp:juju-info neutron-gateway:juju-info</title>
+<line x1="1090" y1="340" x2="90" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="492.00, 16"/>
+<use x="582" y="332" xlink:href="#healthCircle"/>
+<circle cx="1000" cy="340" r="4" fill="#a7a7a7"/>
+<circle cx="180" cy="340" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>ceph-radosgw:mon ceph-mon:radosgw</title>
+<line x1="1090" y1="590" x2="840" y2="840" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="168.78, 16"/>
+<use x="957" y="707" xlink:href="#healthCircle"/>
+<circle cx="1026" cy="653" r="4" fill="#a7a7a7"/>
+<circle cx="903" cy="776" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>ceph-radosgw:identity-service keystone:identity-service</title>
+<line x1="1090" y1="590" x2="590" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="271.51, 16"/>
+<use x="832" y="457" xlink:href="#healthCircle"/>
+<circle cx="1009" cy="549" r="4" fill="#a7a7a7"/>
+<circle cx="670" cy="380" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>ceilometer:amqp rabbitmq-server:amqp</title>
+<line x1="1340" y1="340" x2="590" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="387.28, 16"/>
+<use x="957" y="457" xlink:href="#healthCircle"/>
+<circle cx="1254" cy="368" r="4" fill="#a7a7a7"/>
+<circle cx="675" cy="561" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>ceilometer-agent:ceilometer-service ceilometer:ceilometer-service</title>
+<line x1="1340" y1="840" x2="1340" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="242.00, 16"/>
+<use x="1332" y="582" xlink:href="#healthCircle"/>
+<circle cx="1340" cy="750" r="4" fill="#a7a7a7"/>
+<circle cx="1340" cy="430" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>ceilometer:identity-notifications keystone:identity-notifications</title>
+<line x1="1340" y1="340" x2="590" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="367.00, 16"/>
+<use x="957" y="332" xlink:href="#healthCircle"/>
+<circle cx="1250" cy="340" r="4" fill="#a7a7a7"/>
+<circle cx="680" cy="340" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>ceilometer-agent:nova-ceilometer nova-compute:nova-ceilometer</title>
+<line x1="1340" y1="840" x2="340" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="507.39, 16"/>
+<use x="832" y="707" xlink:href="#healthCircle"/>
+<circle cx="1252" cy="818" r="4" fill="#a7a7a7"/>
+<circle cx="427" cy="611" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>aodh:shared-db mysql:shared-db</title>
+<line x1="1590" y1="340" x2="90" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="752.35, 16"/>
+<use x="832" y="457" xlink:href="#healthCircle"/>
+<circle cx="1501" cy="354" r="4" fill="#a7a7a7"/>
+<circle cx="178" cy="575" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>aodh:identity-service keystone:identity-service</title>
+<line x1="1590" y1="340" x2="590" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="492.00, 16"/>
+<use x="1082" y="332" xlink:href="#healthCircle"/>
+<circle cx="1500" cy="340" r="4" fill="#a7a7a7"/>
+<circle cx="680" cy="340" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>aodh:amqp rabbitmq-server:amqp</title>
+<line x1="1590" y1="340" x2="590" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="507.39, 16"/>
+<use x="1082" y="457" xlink:href="#healthCircle"/>
+<circle cx="1502" cy="361" r="4" fill="#a7a7a7"/>
+<circle cx="677" cy="568" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>gnocchi:storage-ceph ceph-mon:client</title>
+<line x1="1590" y1="590" x2="840" y2="840" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="387.28, 16"/>
+<use x="1207" y="707" xlink:href="#healthCircle"/>
+<circle cx="1504" cy="618" r="4" fill="#a7a7a7"/>
+<circle cx="925" cy="811" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>gnocchi:shared-db mysql:shared-db</title>
+<line x1="1590" y1="590" x2="90" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="742.00, 16"/>
+<use x="832" y="582" xlink:href="#healthCircle"/>
+<circle cx="1500" cy="590" r="4" fill="#a7a7a7"/>
+<circle cx="180" cy="590" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>gnocchi:amqp rabbitmq-server:amqp</title>
+<line x1="1590" y1="590" x2="590" y2="590" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="492.00, 16"/>
+<use x="1082" y="582" xlink:href="#healthCircle"/>
+<circle cx="1500" cy="590" r="4" fill="#a7a7a7"/>
+<circle cx="680" cy="590" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>gnocchi:coordinator-memcached memcached:cache</title>
+<line x1="1590" y1="590" x2="1590" y2="840" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="117.00, 16"/>
+<use x="1582" y="707" xlink:href="#healthCircle"/>
+<circle cx="1590" cy="680" r="4" fill="#a7a7a7"/>
+<circle cx="1590" cy="750" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>gnocchi:metric-service ceilometer:metric-service</title>
+<line x1="1590" y1="590" x2="1340" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="168.78, 16"/>
+<use x="1457" y="457" xlink:href="#healthCircle"/>
+<circle cx="1526" cy="526" r="4" fill="#a7a7a7"/>
+<circle cx="1403" cy="403" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>gnocchi:identity-service keystone:identity-service</title>
+<line x1="1590" y1="590" x2="590" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="507.39, 16"/>
+<use x="1082" y="457" xlink:href="#healthCircle"/>
+<circle cx="1502" cy="568" r="4" fill="#a7a7a7"/>
+<circle cx="677" cy="361" r="4" fill="#a7a7a7"/>
+</g>
+<g>
+<title>ceilometer:identity-credentials keystone:identity-credentials</title>
+<line x1="1340" y1="340" x2="590" y2="340" stroke="#a7a7a7" stroke-width="1px" stroke-dasharray="367.00, 16"/>
+<use x="957" y="332" xlink:href="#healthCircle"/>
+<circle cx="1250" cy="340" r="4" fill="#a7a7a7"/>
+<circle cx="680" cy="340" r="4" fill="#a7a7a7"/>
+</g>
+</g>
+<g id="applications">
+<g transform="translate(1500,250)">
+<title>aodh</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-1" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">aodh</text>
+</g>
+<g transform="translate(1250,250)">
+<title>ceilometer</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-2" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">ceilometer</text>
+</g>
+<g transform="translate(1250,750)">
+<title>ceilometer-agent</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-3" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">ceilometer-agent</text>
+</g>
+<g transform="translate(750,750)">
+<title>ceph-mon</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-4" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">ceph-mon</text>
+</g>
+<g transform="translate(1000,750)">
+<title>ceph-osd</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-5" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">ceph-osd</text>
+</g>
+<g transform="translate(1000,500)">
+<title>ceph-radosgw</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-6" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">ceph-radosgw</text>
+</g>
+<g transform="translate(750,250)">
+<title>cinder</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-7" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">cinder</text>
+</g>
+<g transform="translate(750,500)">
+<title>cinder-ceph</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-8" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">cinder-ceph</text>
+</g>
+<g transform="translate(250,250)">
+<title>glance</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-9" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">glance</text>
+</g>
+<g transform="translate(1500,500)">
+<title>gnocchi</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-10" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">gnocchi</text>
+</g>
+<g transform="translate(500,250)">
+<title>keystone</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-11" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">keystone</text>
+</g>
+<g transform="translate(1500,750)">
+<title>memcached</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-12" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">memcached</text>
+</g>
+<g transform="translate(0,500)">
+<title>mysql</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-13" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">mysql</text>
+</g>
+<g transform="translate(500,750)">
+<title>neutron-api</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-14" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">neutron-api</text>
+</g>
+<g transform="translate(0,250)">
+<title>neutron-gateway</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-15" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">neutron-gateway</text>
+</g>
+<g transform="translate(250,750)">
+<title>neutron-openvswitch</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-16" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">neutron-openvswitch</text>
+</g>
+<g transform="translate(0,750)">
+<title>nova-cloud-controller</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-17" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">nova-cloud-contro...</text>
+</g>
+<g transform="translate(250,500)">
+<title>nova-compute</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-18" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">nova-compute</text>
+</g>
+<g transform="translate(1000,250)">
+<title>ntp</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-19" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">ntp</text>
+</g>
+<g transform="translate(500,0)">
+<title>openstack-dashboard</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-20" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">openstack-dashboard</text>
+</g>
+<g transform="translate(500,500)">
+<title>rabbitmq-server</title>
+<circle cx="90" cy="90" r="90" class="application-block" fill="#f5f5f5" stroke="#888" stroke-width="1"/>
+<use x="0" y="0" xlink:href="#icon-21" transform="translate(42,42)" width="96" height="96" clip-path="url(#clip-mask)"/>
+<rect x="0" y="135" width="180" height="32" rx="2" ry="2" fill="rgba(220, 220, 220, 0.8)"/>
+<text x="90" y="157" text-anchor="middle" style="font-weight:200">rabbitmq-server</text>
+</g>
+</g>
+</svg>

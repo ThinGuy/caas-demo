@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1681"
+   height="931"
+   style="font-family:Ubuntu, sans-serif"
+   viewBox="0 0 1681 931"
+   version="1.1"
+   id="svg948"
+   sodipodi:docname="openstack-telemetry-model-desc.svg"
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06">
+  <metadata
+     id="metadata952">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1171"
+     inkscape:window-height="487"
+     id="namedview950"
+     showgrid="false"
+     inkscape:zoom="0.49508661"
+     inkscape:cx="479.30073"
+     inkscape:cy="603.06742"
+     inkscape:window-x="375"
+     inkscape:window-y="94"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg948" />
+  <defs
+     id="defs76">
+    <g
+       id="healthCircle"
+       transform="scale(1.1)">
+      <svg
+         width="16"
+         height="16"
+         viewBox="0 0 16.000017 16.000017"
+         version="1.1"
+         id="svg10">
+        <g
+           transform="translate(-952,-156.362)"
+           id="g8">
+          <path
+             overflow="visible"
+             d="m 952,156.362 h 16 v 16 h -16 z"
+             id="path2"
+             inkscape:connector-curvature="0"
+             style="color:#000000;overflow:visible;fill:none" />
+          <circle
+             r="7.25"
+             cy="164.362"
+             cx="960"
+             overflow="visible"
+             id="circle4"
+             style="color:#000000;overflow:visible;fill:#a7a7a7;stroke:#a7a7a7;stroke-width:1.5;stroke-dashoffset:0.80000001" />
+          <path
+             style="font-size:15px;line-height:125%;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:center;letter-spacing:0;word-spacing:0;text-anchor:middle;fill:#ffffff"
+             d="m 963.8,161.286 -0.066,0.057 -4.734,4.147 -2.776,-2.38 -0.84,0.948 3.616,3.804 5.5,-5.787 -0.7,-0.79 z"
+             font-size="15"
+             letter-spacing="0"
+             word-spacing="0"
+             id="path6"
+             inkscape:connector-curvature="0" />
+        </g>
+      </svg>
+    </g>
+    <svg
+       id="icon-1"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/aodh.svg"
+         xlink:href="aodh.svg"
+         id="image13"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-2"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/ceilometer.svg"
+         xlink:href="ceilometer.svg"
+         id="image16"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-3"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/ceilometer-agent.svg"
+         xlink:href="ceilometer-agent.svg"
+         id="image19"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-4"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/ceph-mon.svg"
+         xlink:href="ceph-mon.svg"
+         id="image22"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-5"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/ceph-osd.svg"
+         xlink:href="ceph-osd.svg"
+         id="image25"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-6"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/ceph-radosgw.svg"
+         xlink:href="ceph-radosgw.svg"
+         id="image28"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-7"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/cinder.svg"
+         xlink:href="cinder.svg"
+         id="image31"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-8"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/cinder-ceph.svg"
+         xlink:href="cinder-ceph.svg"
+         id="image34"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-9"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/glance.svg"
+         xlink:href="glance.svg"
+         id="image37"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-10"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/gnocchi.svg"
+         xlink:href="gnocchi.svg"
+         id="image40"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-11"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/keystone.svg"
+         xlink:href="keystone.svg"
+         id="image43"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-12"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/memcached.svg"
+         xlink:href="memcached.svg"
+         id="image46"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-13"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/percona-cluster.svg"
+         xlink:href="percona-cluster.svg"
+         id="image49"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-14"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/neutron-api.svg"
+         xlink:href="neutron-api.svg"
+         id="image52"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-15"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/neutron-gateway.svg"
+         xlink:href="neutron-gateway.svg"
+         id="image55"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-16"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/neutron-openvswitch.svg"
+         xlink:href="neutron-openvswitch.svg"
+         id="image58"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-17"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/nova-cloud-controller.svg"
+         xlink:href="nova-cloud-controller.svg"
+         id="image61"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-18"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/nova-compute.svg"
+         xlink:href="nova-compute.svg"
+         id="image64"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-19"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/ntp.svg"
+         xlink:href="ntp.svg"
+         id="image67"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-20"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/openstack-dashboard.svg"
+         xlink:href="openstack-dashboard.svg"
+         id="image70"
+         height="96"
+         width="96" />
+    </svg>
+    <svg
+       id="icon-21"
+       version="1.1"
+       width="100%"
+       height="100%">
+      <image
+         sodipodi:absref="/Volumes/DATA1/Dropbox/caas-demo/images/rabbitmq-server.svg"
+         xlink:href="rabbitmq-server.svg"
+         id="image73"
+         height="96"
+         width="96" />
+    </svg>
+  </defs>
+  <clipPath
+     id="clip-mask">
+    <circle
+       style="font-family:Ubuntu, sans-serif;display:inline;fill:none"
+       id="use79"
+       r="45"
+       cy="49"
+       cx="47" />
+  </clipPath>
+  <g
+     inkscape:groupmode="layer"
+     id="layer1"
+     inkscape:label="desc"
+     style="display:inline">
+    <text
+       transform="translate(1500,250)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text703">aodh</text>
+    <text
+       transform="translate(1250,250)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text715">ceilometer</text>
+    <text
+       transform="translate(1250,750)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text727">ceilometer-agent</text>
+    <text
+       transform="translate(750,750)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text739">ceph-mon</text>
+    <text
+       transform="translate(1000,750)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text751">ceph-osd</text>
+    <text
+       transform="translate(1000,500)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text763">ceph-radosgw</text>
+    <text
+       transform="translate(750,250)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text775">cinder</text>
+    <text
+       transform="translate(750,500)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text787">cinder-ceph</text>
+    <text
+       transform="translate(250,250)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text799">glance</text>
+    <text
+       transform="translate(1500,500)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text811">gnocchi</text>
+    <text
+       transform="translate(500,250)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text823">keystone</text>
+    <text
+       transform="translate(1500,750)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text835">memcached</text>
+    <text
+       transform="translate(0,500)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text847">mysql</text>
+    <text
+       transform="translate(500,750)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text859">neutron-api</text>
+    <text
+       transform="translate(0,250)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text871">neutron-gateway</text>
+    <text
+       transform="translate(250,750)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text883">neutron-openvswitch</text>
+    <text
+       transform="translate(0,750)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text895">nova-cloud-contro...</text>
+    <text
+       transform="translate(250,500)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text907">nova-compute</text>
+    <text
+       transform="translate(1000,250)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text919">ntp</text>
+    <text
+       transform="translate(500)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text931">openstack-dashboard</text>
+    <text
+       transform="translate(500,500)"
+       x="90"
+       y="157"
+       style="font-weight:200;font-family:Ubuntu, sans-serif;text-anchor:middle;display:inline"
+       id="text943">rabbitmq-server</text>
+  </g>
+</svg>

@@ -1,0 +1,16 @@
+description: Kubernetes AWS integrator
+series: bionic
+####################################
+## fkb - aws - integrator overlay ##
+####################################
+applications:
+  aws-integrator:
+    series: bionic
+    charm: cs:~containers/aws-integrator
+    num_units: 1
+    annotations:
+      gui-x: '450'
+      gui-y: '1150'
+relations:
+  - [ aws-integrator, kubernetes-master ]
+  - [ aws-integrator, kubernetes-worker ]

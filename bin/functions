@@ -1,0 +1,451 @@
+[[ $_ != $0 ]] || { printf "\n\e[2G\e[1mPlease source this script!\e[0m ( e.g. \"source ${BASH_SOURCE[0]}\" )\n\n"; sleep 1;exit; }
+
+if [[ $(dpkg 2>/dev/null -l ttf	-ubuntu-font-family|/bin/grep -oE '^ii') ]];then
+    export ULOGO="${RT}\UFEFF\UE0FF\UFEFF${RT}"
+    export ULOGOC="${RO}\UFEFF\UE0FF\UFEFF${RT}"
+    export ULOGOBG="${RO}${RWO}\UFEFF\UE0FF\UFEFF${RT}"
+    export ULOGORBG="${RT}${ROW}\UFEFF\UE0FF\UFEFF${RT}"
+else
+    export ULOGO=
+    export ULOGOC=
+    export ULOGOBG=
+    export ULOGORBG=
+fi
+#\u2005\uE0FF\u2005\uF200\u2005\uF0FF\u2005
+
+duration () {
+	echo $(($(date +%s)-${1}))|\
+	awk '{d=int($NF/60/60/24);h=int($NF/60/60%24);m=int($NF%3600/60);s=int($NF%60); TS=d "d:" h "h:" m "m:" s"s";gsub(/.*$/,TS,$NF);print $0}'|\
+	sed -E 's/0d|:0h:|:0:m|^:|:$//g'
+};export -f duration
+
+get-codepoint() {
+	local ULEN=$(printf "%X" \'${1}|wc -c) 
+	[[ $ULEN -eq 4 ]] && local U="u"
+	[[ $ULEN -eq 5 ]] && local U="U"
+	[[ ! $ULEN =~ ^[4-5]$ ]] && { printf "Make sure you paste a UTF-8 character\n\nUsage: ${FUNCNAME} \U1F60E\n\n";return 1; } 
+	printf "${U}+%X\n" \'${1}
+	
+} 2>/dev/null;export -f get-codepoint
+
+wrap() {
+    local DESC="${FUNCNAME}: Like fold, but with indents\n"
+    [[ $1 = '--desc' ]] && { printf "${DESC}";return; }
+    wrap_usage() {
+        printf "${DESC}\n"
+        printf "\e[2GUsage: ${FUNCNAME%%_*} [-i #] [-w #]\n"
+        printf "\e[4G -i, --indent NUM\e[20GNumber of spaces to indent (default 0)\n"
+        printf "\e[4G -w, --wrap NUM\e[20GColumn number to wrap text at (default 80)\n"
+        printf "\n\e[2GEx:\n"
+        printf "\e[4G <STDOUT>|${FUNCNAME%%_*} -i 5 -w 75 \n"
+        }
+    local INDENT=0
+    local WRAP=80
+    ARGS=`getopt -o w:i:h -l wrap:,indent:,help -n ${FUNCNAME} -- "$@"`
+    eval set -- "$ARGS"
+    while true ; do
+        case "$1" in
+            -i|--indent) local INDENT=${2};shift 2;;
+            -w|--wrap) local WRAP=${2};shift 2;;
+            -h|--help) ${FUNCNAME}_usage;return 2;;
+            --) shift;break;;
+        esac
+    done
+    fold -sw $((${WRAP}-${INDENT}))|sed 's/^./'$(printf "\e[${INDENT}G")'&/g'
+} 2>/dev/null;export -f wrap
+
+spin-trap() { 
+	printf '%s\n' rmam civis|tput -S -
+	trap 'printf "%s\n" smam cnorm|tput -S -;trap - INT TERM EXIT; unset SPID;echo;return 0' INT TERM EXIT
+};export -f spin-trap
+
+spin-trap-clear() {
+	trap - INT TERM EXIT
+	printf "%s\n" smam cnorm|tput -S -
+	echo;return; 
+};export -f spin-trap-clear
+
+spinner() {
+	local bs=$(printf '\b')
+	local MSG="${@}"
+	[[ ${STYPE} = E ]] && local -a CHARS=('\u2003\e[k\r' '\u2003.\u2003' '\u2003..\u2003' '\u2003...\u2003')
+	[[ ${STYPE} = S ]] && local -a CHARS=('⋮\u2003'${bs}'' '⋰\u2003'${bs}'' '⋯\u2003'${bs}'' '⋱\u2003'${bs}'')
+	[[ ${STYPE} = D ]] && local -a CHARS=('․\u2003'${bs}'' '․\u2003'${bs}'' '‥\u2003'${bs}'' '…\u2003'${bs}'' '‧\u2003'${bs}'' '⁚\u2003'${bs}'' '⋮\u2003'${bs}'' '∴\u2003'${bs}'' '⁖\u2003'${bs}'' '∵\u2003'${bs}'' '⁘\u2003'${bs}'' '∷\u2003'${bs}'' '⁙\u2003'${bs}'' '⋯\u2003'${bs}'' '⋱\u2003'${bs}'' '⋮\u2003'${bs}'' '⋰\u2003'${bs}'' '⋯\u2003'${bs}'' '⋱\u2003'${bs}'' '⋮\u2003'${bs}'' '⋰\u2003'${bs}'' '⋯\u2003'${bs}'' '⁙\u2003'${bs}'' '∷\u2003'${bs}'' '⁘\u2003'${bs}'' '∴\u2003'${bs}'' '⁖\u2003'${bs}'' '∵\u2003'${bs}'' '⋮\u2003'${bs}'' '⁚\u2003'${bs}'' '‧\u2003'${bs}'' '…\u2003'${bs}'' '‥\u2003'${bs}'' '․\u2003'${bs}'')
+	[[ ${STYPE} = E2 ]] && local -a CHARS=(🌍 🌏 🌎)
+	[[ ${STYPE} = M ]] && local -a CHARS=(🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘)
+	[[ ${STYPE} = C ]] && local -a CHARS=(🕛 🕧 🕐 🕜 🕑 🕞 🕓 🕟 🕔 🕠 🕕 🕡 🕖 🕢 🕗 🕣 🕘 🕤 🕙 🕥 🕚 🕦)
+	printf "%s\n" smam cnorm|tput -S -
+	spin-trap
+	[[ -z $SPID ]] && { while true;do for i in ${CHARS[@]};do printf "\r${MSG}\u200A${i}\u200A\e[K";local LAST=$i;sleep .10;done;done;echo; }
+	[[ -n $SPID && $(kill -0 $SPID;echo $?) -eq 0 ]] && { while kill -0 $SPID 2>/dev/null;do for i in ${CHARS[@]};do ET=$(duration $SWAIT);printf "\r${MSG}\u200A${i}\u200A\u200A(elapsed task time: $ET)\e[K";local LAST=$i;sleep .10;done;done;wait $SPID;tstatus; }
+	printf "%s\n" smam cnorm|tput -S -
+};export -f spinner
+
+
+watch-aws() {
+  clear;
+  export JUJU_AWS_CTRLR=$(juju controllers --format json|jq -r '.controllers|.[]|select(.cloud=="aws")|"\(.uuid):\(.region)"')
+  printf '%s\n' rmam civis|tput -S -
+  trap 'printf "%s\n" smam cnorm|tput -S -; trap - INT TERM EXIT; echo; return 0' INT TERM EXIT
+  while true;do 
+    tput cup 0 0;
+    (printf "Name|Workload (Unit)|State|InstanceID|AZ|Size|IP|Uptime\n";aws ec2 describe-instances --region ${JUJU_AWS_CTRLR##*:} --filters "Name=tag:juju-controller-uuid,Values=${JUJU_AWS_CTRLR%%:*}"|jq -r '.Reservations[]|.Instances[]|"\(.Tags[]|select(.Key=="Name").Value)|\(.Tags[]|select(.Key=="juju-units-deployed").Value)|\(.State.Name)|\(.InstanceId)|\(.Placement.AvailabilityZone)|\(.InstanceType)|\(.PublicIpAddress)|\(((now-((.LaunchTime|gsub(".000";"")|fromdateiso8601)))/60/60/24)|tostring|gsub("\\.[0-9]+";""))d:\(((now-((.LaunchTime|gsub(".000";"")|fromdateiso8601)))/60/60%24)|tostring|gsub("\\.[0-9]+";""))h:\(((now-((.LaunchTime|gsub(".000";"")|fromdateiso8601)))%3600/60)|tostring|gsub("\\.[0-9]+";""))m:\(((now-((.LaunchTime|gsub(".000";"")|fromdateiso8601)))%60)|tostring|gsub("\\.[0-9]+";""))s'$(printf "\e[K")'"'; )|\
+    sort -uV|\
+    column -nexts"|"|\
+    sed '1s/^.*/'$(printf "\e[1m&\e[0m")'/';
+    sleep 1;
+  done;
+  trap - INT TERM EXIT
+  printf "%s\n" smam cnorm|tput -S -
+  echo;return;
+}
+
+banner() {
+    [[ -z ${PROG_NAME} ]] && local PROG_NAME=${FUNCNAME}
+    [[ -z ${PROG_VER} ]] && local PROG_VER=1.0
+    local DESC="\e[2G${FUNCNAME}:  Displays a two-tone banner with a changeable title\n"
+    banner_usage() {
+    		local TTITLE='Canonical|Ubuntu'
+        printf "${DESC}\n"
+        printf "\e[2GUsage: ${FUNCNAME%%_*} (-t title) \"banner message/text\"\n\n"
+        printf "\e[4G -u, --ubuntu \e[28GUbuntu themed banner\n"
+        printf "\e[4G -c, --canonical \e[28GCanonical themed banner\n"
+        printf "\e[4G -t, --title \e[28GOptional: Text on left/white side of banner\n"
+        printf "\e[28Gdefault: (if no style chosen) Canonical|Ubuntu\n"
+        printf "\e[28GNote: If a title contains spaces, you put the title in quotes\n\n"
+        printf "\e[4G -m, --message \e[28GText on Right/Orange side of banner\n"
+        printf "\e[28GNote: The -m argument is optional. By default, any text\n"
+        printf "\e[28Gafter the banner command will be used, save\n"
+        printf "\e[28Gfor text specified as the title\n"
+        printf "\e[28GHowever, if -m is used, you must put the message in quotes\n\n"
+        printf "\e[4G -h, --help\e[28GThis message\n"
+        printf "\n\e[2GExample using -t,--title: \e[0;38;2;225;95;0m\e[3mbanner -t \"Acme Tools v1.0\" Your banner message goes here\e[0m will display\n"
+        printf "\n\e[2G\e[0;1;38;2;1;1;0m\e[48;2;255;255;255m Acme Tools v1.0 \e[0;1;38;2;255;255;255m\e[48;2;225;95;0m   Your banner message goes here   \e[0m\n\n"
+        printf "\n\e[2GExample without arguments: \e[0;38;2;225;95;0m\e[3mbanner Thanks for using My Functions! \e[0m will display\n"
+        printf "\n\e[2G\e[0;1;38;2;1;1;0m\e[48;2;255;255;255m ${TITLE}\e[0;1;38;2;255;255;255m\e[48;2;225;95;0m   Thanks for using My Functions!   \e[0m\n\n"
+        printf "\n\e[2GExample using -m,--message: \e[0;38;2;225;95;0m\e[3mbanner -m \"Thanks for using quoting this long message! \" \e[0m will display\n"
+        printf "\n\e[2G\e[0;1;38;2;1;1;0m\e[48;2;255;255;255m ${TITLE}\e[0;1;38;2;255;255;255m\e[48;2;225;95;0m   Thanks for using quoting this long message!   \e[0m\n\n"
+        }
+    ARGS=`getopt -o t:m:cudh -l canonical,ubuntu,title:,message,desc,help -n ${FUNCNAME} -- "$@"`
+    eval set -- "$ARGS"
+    while true ; do
+        case "$1" in
+            -c|--canonical) local STYLE=C;shift 1;;
+            -u|--ubuntu) local STYLE=U;shift 1;;
+            -t|--title) local TITLE="${2}";shift 2;;
+            -m|--message) local MSG="${2}";shift 2;;
+            -d|--desc) printf ${DESC};return 2;;
+            -h|--help) ${FUNCNAME}_usage;return 2;;
+            --) shift;break;;
+        esac
+    done
+    [[ ${MSG} ]] || local MSG="${@}"
+    [[ ${MSG} ]] || { printf "\e[2GMissing banner message\n";${FUNCNAME}_usage;return; }
+    [[ -n ${TITLE} ]] && local TITLE="\u2003${TITLE}\u2003\u2003"
+    [[ -z ${TITLE} && ${STYLE} = C ]] && local TITLE="\u2005$(grep -oE . <<< CANONICAL|sed -r 's/O/◉ /g'|paste -sd ' ')\u200A"
+    [[ -z ${TITLE} && ${STYLE} = U ]] && local TITLE="\u2005Ubuntu\u200A\uE0FF\u200A"
+    [[ -z ${TITLE} && -z ${STYLE} ]] && local TITLE="\u2005Canonical|Ubuntu"
+    [[ ${STYLE} = U || -z ${STYLE} ]] && printf "\n\e[0;38;2;17;17;17m\e[48;2;255;255;255m\u2005${TITLE}\u2005\e[0;38;2;255;255;255m\e[48;2;225;95;0m\u2005\u2005${MSG}\u2005\u2005\e[0m\n\n"
+    [[ ${STYLE} = C ]] && printf "\n\e[0;48;5;89;38;5;255m\u2005${TITLE}\u2005\e[0;38;2;255;255;255m\e[0;38;2;119;33;111m\e[48;2;255;255;255m\u2005\u2005${MSG}\u2005\u2005\e[0m\n\n"
+};export -f banner
+
+tstatus() {
+    EXITCODE=$(echo $?)
+    [[ -z ${SC} ]] && local SC=$(bc<<<"scale=0;$(tput cols)*75/100")
+    [[ $1 = --desc ]] && { printf "\e[2G${FUNCNAME}: Displays an text-based status message.\n";return; }
+    [[ $EXITCODE -eq 0 ]] && { printf "\e[$((${SC}+2))G\e[0;38;2;0;255;0mOK\u200A\e[0m\n";return $EXITCODE; }
+    [[ $EXITCODE -eq 1 ]] && { printf "\e[${SC}G\e[0;38;2;255;0;0mFAILED\u200A\e[0m\n";return $EXITCODE; }
+};export -f tstatus
+
+istatus() {
+    EXITCODE=$(echo $?)
+    [[ -z ${SC} ]] && local SC=$(bc<<<"scale=0;$(tput cols)*75/100")
+    [[ $1 = --desc ]] && { printf "\e[2G${FUNCNAME}: Displays an icon-based status message.\n";return; }
+    [[ $EXITCODE -eq 0 ]] && { printf "\e[${SC}G\e[0;38;2;0;255;0m\u200A\u2714\u200A\e[0m\n";return $EXITCODE; }
+    [[ $EXITCODE -eq 1 ]] && { printf "\e[${SC}G\e[0;38;2;255;0;0m\u200A\u2716\u200A\e[0m\n";return $EXITCODE; }
+};export -f istatus
+
+countdown() {
+  local DESC="\e[1m${FUNCNAME}:\e[0m Sleep/wait script with optional message that counts down remaining seconds."
+  countdown_usage() {
+    printf "\n\e[2G${DESC}\n\n"
+    printf "\n\e[2G\e[1mUsage:\e[0m ${FUNCNAME%%_*} [ options ]\n\n"
+    printf "\n\e[2G\e[1mOptions:\e[0m\n\n"
+    printf "\e[4G-p, --pre\e[20GMessage to show before the digits. Default: \"Waiting (n second(s))\"\n\n"
+    printf "\e[4G-P, --post\e[20GMessage to show after the digits.\n\n"
+    printf "\e[4G-t, --time\e[20GNumber of seconds to sleep for\n\n"
+    printf "\e[4G--help\e[20GThis message\n\n"
+    printf "\n\n"
+  }
+  local PRE POST TIME
+  ARGS=$(getopt -o p:P:t:h --long pre:,post:,time:,desc,help -n ${FUNCNAME} -- "$@")
+  [[ ${ARGS} = ' --' ]] && { ${FUNCNAME}_usage;return 2; }
+  eval set -- "$ARGS"
+  while true; do
+    case "$1" in
+      -p | --pre) local PRE=${2};shift 2;;
+      -P | --post) local POST=${2};shift 2;;
+      -t | --time) local TIME=${2};shift 2;;
+      --desc) printf "\e[2G${DESC}\n";return 0;;
+      --help) ${FUNCNAME}_usage;return 2;;
+      --) shift;break;;
+    esac
+  done
+  [[ -n ${TIME} && ${TIME} =~ ^[0-9]+$ ]] || { printf "\n\e[1mMissing time argument\e[0m (-t,--time)\n";${FUNCNAME}_usage;return 2; }
+  [[ -z ${PRE} ]] && local PRE="Waiting"
+  trap 'tput cnorm; trap - INT TERM EXIT; return 0' INT TERM EXIT
+  tput civis
+  for i in $(seq $TIME -1 1);do [[ $i = 1 ]] && local W= || local W="s";printf "\r\e[2G${PRE} ${i} second${W} ${POST}\e[K";sleep 1;done
+  printf '%s\n' el el1 cnorm |tput -S -
+  echo
+  trap - INT TERM EXIT
+}
+
+make-gradient() {
+	local DESC="\e[1m${FUNCNAME}:\e[0m Create bash arrays containing values for a two color gradient."
+	make-gradient_usage() {
+		printf "\n\e[2G${DESC}\n\n"
+		printf "\n\e[2G\e[1mUsage:\e[0m ${FUNCNAME%%_*} [ options ]\n\n"
+		printf "\n\e[2G\e[1mOptions:\e[0m\n\n"
+		printf "\e[4G-s, --start\e[20GStarting color value in hex. Default: #ffffff (white)\n\n"
+		printf "\e[4G-e, --end\e[20GEnding color value in hex. Default: #000000 (black)\n\n"
+		printf "\e[4G-S, --STEPS\e[20GNumber of steps in gradient. Default: 10\n\e[20GNote: Actual steps = n+2 including start + end values\n\n"
+		printf "\e[4G-b, --bold\e[20GSet bold/standoutmode\n\n"
+		printf "\e[4G--show-fg\e[20GDisplay a foreground gradient showing RGB printf seq, HEX,\n\e[20Gand RGB values\n\n"
+		printf "\e[4G--show-bg\e[20GDisplay a background gradient showing RGB printf seq, HEX,\n\e[20Gand RGB values\n\n"
+		if [[ $(declare -f hex2ansi >/dev/null;echo $?) -eq 0 ]];then
+			printf "\e[4G--show-ansi-fg\e[20GDisplay a foreground gradient showing 256 Color ANSI Codes\n\n"
+			printf "\e[4G--show-ansi-bg\e[20GDisplay a background gradient showing 256 Color ANSI Codes\n\n"
+		fi
+		printf "\e[4G--show-arr\e[20GShow the arrays created (Arrays start with ^GRAD_)\n\n"
+		printf "\e[4G-h, --help\e[20GThis message\n\n"
+		printf "\n\e[2G\e[1mCaveats:\e[0m\n\n"
+		printf "\e[4G\u2022\u200BGradients are heavy on starting color (needs work)\n\n"
+		printf "\e[4G\u2022\u200BLarge step values make for smoother gradients, but don't reach final color\n\n"		
+		printf "\e[4G\u2022\u200BGRAD_RGB_FG, GRAD_RGB_BG, HEX, and GRAD_RGB values are 24bit color\n\n"	
+		printf "\e[4G\u2022\u200BGRAD_ANSI, GRAD_ANSI_FG, and GRAD_ANSI_FG have limited accuracy\n\e[6Gas 24bit colors get approximated to 256 color ANSI values \n\n"
+		printf "\e[4G\u2022\u200BGRAD_ANSI* requires function hex2ansi\n\e[6Ghttps://gist.github.com/ThinGuy/e648139da2d504f4d6fbc74a379abf35\n\n"
+		printf "\e[4G\u2022\u200BSince ANSI values are limited to 256 color, some values may be repeated.\n\e[6GRun the array through uniq to remove, i.e.:\n"
+		printf '\e[6G~$\e[3m declare -ag GRAD_ANSI_FG=($(printf \x27%%s\x5cn\x27 ${GRAD_ANSI_FG[@]}|uniq))\e[0m\n\n'	
+		printf "\n\e[2G\e[1mExample:\e[0m\n\n"
+		printf "\e[4GTo create a 10 step gradient from Ubuntu Orange (#e95420) to\n\e[4GCanonical Aubergine (#300a24): \n\n"
+		printf "\e[6G~$\e[3m ${FUNCNAME%%_*} -s '#e95420' -e '#300a24' -S 10 --show-bg\e[0m\n\n"
+		${FUNCNAME%%_*} -s '#e95420' -e '#300a24' -S 10 --show-bg|while IFS= read -r line;do echo "$line"|sed 's/^.*$/      &/g';done
+		printf "\n\n"
+	}
+	local SFG=false SBG=false SAR=false SAFG=false SABG=false STEPS=10 B=0
+	ARGS=$(getopt -o s:e:S:bh --long start:,end:,steps:,bold,show-bg,show-fg,show-ansi-bg,show-ansi-fg,show-arr,help -n ${FUNCNAME} -- "$@")
+	eval set -- "$ARGS"
+    while true; do
+        case "$1" in
+            -s | --start) local C1=${2#"#"};shift 2;;
+            -e | --end) local C2=${2#"#"};shift 2;;
+            -S | --steps) local STEPS=${2};shift 2;;
+            -b | --bold) local B=1;shift 1;;
+                 --show-fg) local SFG=true;shift;;
+                 --show-bg) local SBG=true;shift;;
+                 --show-arr) local SAR=true;shift;;
+                 --show-ansi-fg) local SAFG=true;shift;;
+                 --show-ansi-bg) local SABG=true;shift;;
+                 --desc) printf "\n\e[2G${DESC}\n";return 0;;
+            -h|--help) ${FUNCNAME}_usage;return 2;;
+            --) shift;break;;
+        esac
+    done
+[[ -z $C1 ]] && local C1=ffffff
+[[ -z $C2 ]] && local C2=000000
+declare -ag START=($(for i in {0..5..2};do echo $((16#${C1:${i}:2}));done))
+declare -ag END=($(for i in {0..5..2};do echo $((16#${C2:${i}:2}));done))
+declare -ag DIFF_C=($(for i in {0..2};do echo $((${END[$i]}-${START[$i]}));done))
+declare -ag STEPS_R=($(for ((i=0;i<${STEPS};i++));do echo $((${START[0]}+((${DIFF_C[0]}/${STEPS}*${i}))));done))
+STEPS_R+=("${END[0]}")
+declare -ag STEPS_G=($(for ((i=0;i<${STEPS};i++));do echo $((${START[1]}+((${DIFF_C[1]}/${STEPS}*${i}))));done))
+STEPS_G+=("${END[1]}")
+declare -ag STEPS_B=($(for ((i=0;i<${STEPS};i++));do echo $((${START[2]}+((${DIFF_C[2]}/${STEPS}*${i}))));done))
+STEPS_B+=("${END[2]}")
+declare -ag GRAD_RGB_FG=($(for ((i=0; i<${#STEPS_R[@]}; i++)); do printf '\\e['${B}';'${B}';38;2;%d;%d;%dm\n' "${STEPS_R[i]}" "${STEPS_G[i]}" "${STEPS_B[i]}";done))
+declare -ag GRAD_RGB_BG=($(for ((i=0; i<${#STEPS_R[@]}; i++)); do printf '\\e['${B}';'${B}';48;2;%d;%d;%dm\n' "${STEPS_R[i]}" "${STEPS_G[i]}" "${STEPS_B[i]}";done))
+declare -ag GRAD_RGB=($(for ((i=0; i<${#STEPS_R[@]}; i++)); do printf '%d,%d,%d\n' "${STEPS_R[i]}" "${STEPS_G[i]}" "${STEPS_B[i]}";done))
+declare -ag GRAD_HEX=($(for ((i=0; i<${#STEPS_R[@]}; i++)); do printf '#%02x%02x%02x\n' "${STEPS_R[i]}" "${STEPS_G[i]}" "${STEPS_B[i]}";done))
+[[ $(declare -f hex2ansi >/dev/null;echo $?) -eq 0 ]] && { declare -ag GRAD_ANSI=($(printf '%s\n' ${GRAD_HEX[@]//#}|xargs -rn1 bash -c 'hex2ansi $0')); }
+[[ $(declare -f hex2ansi >/dev/null;echo $?) -eq 0 ]] && [[ -n ${GRAD_ANSI[@]} ]] && { declare -ag GRAD_ANSI_FG=($(printf '\\e['${B}';'${B}';38;5;%sm\n' ${GRAD_ANSI[@]})); }
+[[ $(declare -f hex2ansi >/dev/null;echo $?) -eq 0 ]] && [[ -n ${GRAD_ANSI[@]} ]] && { declare -ag GRAD_ANSI_BG=($(printf '\\e['${B}';'${B}';48;5;%sm\n' ${GRAD_ANSI[@]})); }
+[[ ${SAFG} = true && $(declare -f hex2ansi >/dev/null;echo $?) -eq 0 && -n ${GRAD_ANSI_FG[@]} ]] && { (echo;for ((i=0; i<${#GRAD_ANSI_FG[@]}; i++)); do printf '%s %03d\n' "${GRAD_ANSI_FG[i]}" "${GRAD_ANSI[i]}";done)|xargs -rn2 -P1 bash -c '(printf "\\${0}";printf '"'"'  %16s %06s    \e[0m  \n'"'"' \\"${0}"  "${1}")'; }
+[[ ${SABG} = true && $(declare -f hex2ansi >/dev/null;echo $?) -eq 0 && -n ${GRAD_ANSI_BG[@]} ]] && { (echo;for ((i=0; i<${#GRAD_ANSI_BG[@]}; i++)); do printf '%s %03d\n' "${GRAD_ANSI_BG[i]}" "${GRAD_ANSI[i]}";done)|xargs -rn2 -P1 bash -c '(printf "\\${0}";printf '"'"'  %16s %06s    \e[0m  \n'"'"' \\"${0}"  "${1}")'; }
+[[ ${SFG} = true ]] && { (echo;for ((i=0; i<${#GRAD_RGB_FG[@]}; i++)); do printf '%s %s %s\n' "${GRAD_RGB_FG[i]}" "${GRAD_HEX[i]}" "${GRAD_RGB[i]}";done)|xargs -rn3 -P1 bash -c '(printf "\\${0}";printf '"'"'    %25s %10s %12s    \e[0m  \n'"'"' \\"${0}" "${1}" "${2}")'; }
+[[ ${SBG} = true ]] && { (echo;for ((i=0; i<${#GRAD_RGB_BG[@]}; i++)); do printf '%s %s %s\n' "${GRAD_RGB_BG[i]}" "${GRAD_HEX[i]}" "${GRAD_RGB[i]}";done)|xargs -rn3 -P1 bash -c '(printf "\\${0}";printf '"'"'    %25s %10s %12s    \e[0m  \n'"'"' \\"${0}" "${1}" "${2}")'; }
+[[ ${SAR} = true ]] && { for ARR in $(set -o posix; set|/bin/grep -oE '^GRAD_[A|R|H][^=]+'|sort -uV);do printf "\n${ARR}=( ";eval printf "%s\\\n" \${${ARR}[@]}|paste -sd" "|sed 's/$/\ \)/';done;echo; }
+};export -f make-gradient
+
+hex2ansi(){
+	#Returns approximate 256 ANSI Color Code for a given hex value
+	local HEX=${1#"#"};
+	for i in R0 G2 B4;do eval export ${i:0:1}=$((16#${HEX:${i:1:2}:2}));done
+	if [[ $(echo $((${R}-${G}))|sed 's/-//g') -lt 16 && $(echo $((${R}-${B}))|sed 's/-//g') -lt 16 && $(echo $((${G}-${B}))|sed 's/-//g') -lt 16 ]];then
+		local GR=$(((${R}+${G}+${B})/3));
+		if [[ -n ${GR} && ${GR} -lt 5 ]];then local AC=0;
+		elif [[ -n ${GR} && ${GR} -gt 246 ]];then local AC=15;
+		else local AC=$(((${GR}-3)/10+232));fi
+	elif [[ $(echo $((${R}-0))|sed 's/-//g') -lt 24 && $(echo $((${G}-0))|sed 's/-//g') -lt 24 && $(echo $((${B}-${0}))|sed 's/-//g') -lt 24 ]];then local AC=0;
+	elif [[ $(echo $((${R}-128))|sed 's/-//g') -lt 14 && $(echo $((${G}-0))|sed 's/-//g') -lt 24 && $(echo $((${B}-${0}))|sed 's/-//g') -lt 24 ]];then local AC=1;
+	elif [[ $(echo $((${R}-0))|sed 's/-//g') -lt 24 && $(echo $((${G}-128))|sed 's/-//g') -lt 14 && $(echo $((${B}-${0}))|sed 's/-//g') -lt 24 ]];then local AC=2;
+	elif [[ $(echo $((${R}-128))|sed 's/-//g') -lt 14 && $(echo $((${G}-128))|sed 's/-//g') -lt 14 && $(echo $((${B}-0))|sed 's/-//g') -lt 24 ]];then local AC=3;
+	elif [[ $(echo $((${R}-0))|sed 's/-//g') -lt 24 && $(echo $((${G}-0))|sed 's/-//g') -lt 24 && $(echo $((${B}-128))|sed 's/-//g') -lt 14 ]];then local AC=4;
+	elif [[ $(echo $((${R}-128))|sed 's/-//g') -lt 14 && $(echo $((${G}-0))|sed 's/-//g') -lt 24 && $(echo $((${B}-128))|sed 's/-//g') -lt 14 ]];then local AC=5;
+	elif [[ $(echo $((${R}-0))|sed 's/-//g') -lt 24 && $(echo $((${G}-128))|sed 's/-//g') -lt 14 && $(echo $((${B}-128))|sed 's/-//g') -lt 14 ]];then local AC=6;
+	elif [[ $(echo $((${R}-192))|sed 's/-//g') -lt 18 && $(echo $((${G}-192))|sed 's/-//g') -lt 18 && $(echo $((${B}-192))|sed 's/-//g') -lt 18 ]];then local AC=7;
+	elif [[ $(echo $((${R}-128))|sed 's/-//g') -lt 14 && $(echo $((${G}-128))|sed 's/-//g') -lt 14 && $(echo $((${B}-128))|sed 's/-//g') -lt 14 ]];then local AC=8;
+	elif [[ $(echo $((${R}-255))|sed 's/-//g') -lt 10 && $(echo $((${G}-128))|sed 's/-//g') -lt 14 && $(echo $((${B}-128))|sed 's/-//g') -lt 14 ]];then local AC=9;
+	elif [[ $(echo $((${R}-128))|sed 's/-//g') -lt 14 && $(echo $((${G}-255))|sed 's/-//g') -lt 10 && $(echo $((${B}-128))|sed 's/-//g') -lt 14 ]];then local AC=10;
+	elif [[ $(echo $((${R}-255))|sed 's/-//g') -lt 10 && $(echo $((${G}-255))|sed 's/-//g') -lt 10 && $(echo $((${B}-128))|sed 's/-//g') -lt 14 ]];then local AC=11;
+	elif [[ $(echo $((${R}-128))|sed 's/-//g') -lt 14 && $(echo $((${G}-128))|sed 's/-//g') -lt 14 && $(echo $((${B}-255))|sed 's/-//g') -lt 10 ]];then local AC=12;
+	elif [[ $(echo $((${R}-255))|sed 's/-//g') -lt 10 && $(echo $((${G}-128))|sed 's/-//g') -lt 14 && $(echo $((${B}-255))|sed 's/-//g') -lt 10 ]];then local AC=13;
+	elif [[ $(echo $((${R}-128))|sed 's/-//g') -lt 14 && $(echo $((${G}-255))|sed 's/-//g') -lt 10 && $(echo $((${B}-255))|sed 's/-//g') -lt 10 ]];then local AC=14;
+	elif [[ $(echo $((${R}-255))|sed 's/-//g') -lt 10 && $(echo $((${G}-255))|sed 's/-//g') -lt 10 && $(echo $((${B}-255))|sed 's/-//g') -lt 10 ]];then local AC=15;
+	else
+		local AC=16;
+		if [[ ${R} -lt 48 ]];then :
+		elif [[ ${R} -lt 115 ]];then local AC=$((AC+(36*1)));
+		elif [[ ${R} -lt 156 ]];then local AC=$((AC+(36*2)));
+		elif [[ ${R} -lt 196 ]];then local AC=$((AC+(36*3)));
+		elif [[ ${R} -lt 235 ]];then local AC=$((AC+(36*4)));
+		else local AC=$((AC+(36*5)));fi
+		if [[ ${G} -lt 48 ]];then :
+		elif [[ ${G} -lt 115 ]];then local AC=$((AC+(6*1)));
+		elif [[ ${G} -lt 156 ]];then local AC=$((AC+(6*2)));
+		elif [[ ${G} -lt 196 ]];then local AC=$((AC+(6*3)));
+		elif [[ ${G} -lt 235 ]];then local AC=$((AC+(6*4)));
+		else local AC=$((AC+(6*5)));fi
+		if [[ -${B} -lt 48 ]];then :
+		elif [[ ${B} -lt 115 ]];then local AC=$((AC+1));
+		elif [[ ${B} -lt 156 ]];then local AC=$((AC+2));
+		elif [[ ${B} -lt 196 ]];then local AC=$((AC+3));
+		elif [[ ${B} -lt 235 ]];then local AC=$((AC+4));
+		else local AC=$((AC+5));fi
+	fi
+	echo "$AC"
+};export -f hex2ansi
+
+get-term-colors() {
+	exec < /dev/tty
+	local OT=$(stty -g) FGC= FG= BGC= BG=
+	stty raw -echo min 0
+	echo -en '\e]10;?\e\\' >/dev/tty
+	if IFS=';' read -t.5 -r -d '\' FG ; then
+		local FGC=$(echo $FG | sed 's/^.*\;//;s/[^rgb:0-9a-f/]//g')
+	fi
+	echo -en '\e]11;?\e\\' >/dev/tty
+	if IFS=';' read -t.5 -r -d '\' BG ; then
+		local BGC=$(echo $BG | sed 's/^.*\;//;s/[^rgb:0-9a-f/]//g')
+	fi
+	stty ${OT}
+	local FG BG HEX RGB ESC
+	local DESC="\e[1m${FUNCNAME}:\e[0m Get foreground/background colors of current terminal."
+	get-term-colors_usage() {
+		printf "\n\e[2G${DESC}\n\n"
+		printf "\n\e[2G\e[1mUsage:\e[0m ${FUNCNAME%%_*} [ options ]\n\n"
+		printf "\n\e[2G\e[1mOptions:\e[0m\n\n"
+		printf "\e[4G-f, --fg\e[20Gforeground color\n\n"
+		printf "\e[4G-b, --bg\e[20Gbackground color\n\n"
+		printf "\e[4G-h, --hex\e[20GShow hex value\n\n"
+		printf "\e[4G-r, --rgb\e[20GShow RGB value\n\n"
+		printf "\e[4G-e, --esc\e[20GShow usable escape sequence (i.e. for printf, echo -e)\n\n"
+		printf "\e[4G--help\e[20GThis message\n\n"
+		printf "\n\n"
+		printf "\n\e[2G\e[1mCaveats:\e[0m\n\n"
+		printf "\e[4G\u2022\u200ATerminal must support Operating System Control (OSC) sequences\n\e[6GSee: https://invisible-island.net/xterm/ctlseqs/ctlseqs.txt\n\n"
+		printf "\e[4G\u2714\u200AWorks: gnome-terminal, xfce4-terminal, xterm\n\n"
+		printf "\e[4G\u2716\u200AFails: iTerm/iTerm2, MacOS Terminal, puTTY\n\n"
+		printf "\n\n"
+	}
+	ARGS=$(getopt -o fbreh --long foreground,background,hex,rgb,esc,desc,help -n ${FUNCNAME} -- "$@")
+	[[ ${ARGS} = ' --' ]] && { ${FUNCNAME}_usage;return 2; }
+	eval set -- "$ARGS"
+	while true; do
+		case "$1" in
+			-f | --foreground) local FG=true;shift;;
+			-b | --background) local BG=true;shift;;
+			-h | --hex) local HEX=true;shift;;
+			-r | --rgb) local RGB=true;shift;;
+			-e | --esc) local ESC=true;shift;;
+			--desc) printf "\e[2G${DESC}\n";return 0;;
+			--help) ${FUNCNAME}_usage;return 2;;
+			--) shift;break;;
+		esac
+	done
+	local TERM_FG_HEX="$(echo ${FGC}|sed -e 's/rgb:/#/g;s/\///g;s/\(..\)\1/\1/g;')"
+	local TERM_FG_RGB="$(echo ${FGC}|sed -e 's/rgb://g;s/\//\n/g;s/\(..\)\1/0x\1/g;'|xargs -rn1 printf '%03d\n'|paste -sd,)"
+	local TERM_FG_ESC="$(echo ${FGC}|sed -e 's/rgb://g;s/\//\n/g;s/\(..\)\1/0x\1/g;'|xargs -rn1 printf '%d\n'|paste -sd';'|sed 's/^.*$/\\e[38;2;&m/g')"
+	local TERM_BG_HEX="$(echo ${BGC}|sed -e 's/rgb:/#/g;s/\///g;s/\(..\)\1/\1/g;')"
+	local TERM_BG_RGB="$(echo ${BGC}|sed -e 's/rgb://g;s/\//\n/g;s/\(..\)\1/0x\1/g;'|xargs -rn1 printf '%03d\n'|paste -sd',')"
+	local TERM_BG_ESC="$(echo ${BGC}|sed -e 's/rgb://g;s/\//\n/g;s/\(..\)\1/0x\1/g;'|xargs -rn1 printf '%d\n'|paste -sd';'|sed 's/^.*$/\\e[48;2;&m/g')"
+	[[ ${FG} = true ]] && [[ ${HEX} = true ]] && echo ${TERM_FG_HEX}
+	[[ ${FG} = true ]] && [[ ${RGB} = true ]] && echo ${TERM_FG_RGB}
+	[[ ${FG} = true ]] && [[ ${ESC} = true ]] && echo ${TERM_FG_ESC}
+	[[ ${BG} = true ]] && [[ ${HEX} = true ]] && echo ${TERM_BG_HEX}
+	[[ ${BG} = true ]] && [[ ${RGB} = true ]] && echo ${TERM_BG_RGB}
+	[[ ${BG} = true ]] && [[ ${ESC} = true ]] && echo ${TERM_BG_ESC}
+	[[ -z ${FGC} && -z ${BGC} ]] && { printf "\e[2GSorry. This terminal does not fully support support Operating System Control\n\e[2G(OSC) sequences.\n" 1>&2;return 1; }
+};export -f get-term-colors
+
+show-aws-vars() {
+  awk 'BEGIN{IGNORECASE = 1}/start vars/{flag=1;next}/end vars/{flag=0}flag {gsub(/^ .*$/,"");print}' $( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )/aws-demo.sh
+}
+
+test-url() {
+        curl -sSlL --connect-timeout 5 --max-time 10 --retry 5 --retry-delay 1 -w %{http_code} -o /dev/null ${1}|/bin/grep -oE '^...'
+}
+
+juju-show-relations() {
+    local DESC="${FUNCNAME}: Show juju relations with options for app names and highlighting cross-model relations"
+    juju-show-relations_usage() {
+        printf "\n\e[2G${DESC}\n\n"
+        printf "\e[2GUsage: ${FUNCNAME%%_*} [-m <model>]\n\n"
+        printf "\e[4G -m, --model\e[20GModel to operate in. Accepts [<controller name>:]<model name>\n"
+				printf "\e[4G -a, --app \e[20GApplication to show relations for (blank = show all)\n"
+				printf "\e[4G -b, --bundle \e[20GPrint relations in yaml format (bundle friendly)\n"
+				printf "\e[4G -c, --cmr \e[20GHighlight (cyan) cross-model-relations (CMR)\n"                
+        printf "\e[4G -h, --help\e[20GThis message\n"
+        printf "\n\n"
+        }
+    local MODEL=
+    local AVAL=
+    local HCMR=false
+    local BUNDLE=false
+    ARGS=`getopt -o m:a:bch -l model:,app:,cmr,bundle,desc,help -n ${FUNCNAME} -- "$@"`
+    eval set -- "$ARGS"
+    while true ; do
+        case "$1" in
+            -m|--model) local MODEL=${2};shift 2;;
+            -a|--app) local AVAL="${2}";shift 2;;
+            -b|--bundle) local BUNDLE=true;shift 1;;
+            -c|--cmr) local HCMR=true;shift 1;;
+            --desc) printf "\n\e[2G${DESC}\n";return 0;;
+            -h|--help) ${FUNCNAME}_usage;return 2;;
+            --) shift;break;;
+        esac
+    done
+    [[ -z ${MODEL} ]] && local MODEL=$(juju models --format=json|jq 2>/dev/null -r '.["current-model"]')
+    [[ -z ${MODEL} ]] && { printf "\n\e[38;2;255;0;0m\e[4GError:\e[0m Cannot determine Juju model.\e[0m\n\n\e[4GPlease use the -m <model> option or juju switch to one of the following models:\n$(juju models --format=json|jq 2>/dev/null -r '.models|to_entries[]|"    - \(.value."short-name")"')\n\n"; return; }
+    [[ ${HCMR} = true ]] && local -a LSAAS=($(juju 2>/dev/null status -m ${MODEL}|awk '/SAAS/,/^$/{if (/SAAS/) next;print $1}'))
+    [[ -z ${AVAL} && ! ${@:0:1} = '-' && -n ${@} ]] && local AVAL=${@}
+    [[ -n ${AVAL} && ${AVAL:0:1} = '-' ]] && { printf "\n\e[38;2;255;0;0m\e[4GError:\e[0m \"${AVAL}\" is not a valid application name.\n\e[4GPlease check argument ordering and provide the application you'd like to show configuration options for after the \"-a\" option\n"; return 1; }
+    [[ -n ${AVAL} ]] && juju-create-arrays -q -m ${MODEL}
+    if [[ -n ${AVAL} ]];then
+    	grep -qP '(^|\s)\K'${AVAL}'(?=\s|$)' <<< ${JUJU_APPS[@]}
+			if [[ $? -eq 1 ]];then
+				printf "\n\e[38;2;255;0;0m\e[4GError:\e[0m ${AVAL} not found in Juju model ${MODEL}.\e[0m\n\n\e[4GPlease use the -m <model> option or choose one of the following applications:\n\n"
+				(printf "%s %s %s\n" ${JUJU_APPS[@]}|column -next)|fold -s -w80
+				return
+    	fi
+    fi
+ 	[[ -n ${AVAL} && ${HCMR} = false && $BUNDLE = false ]] && juju 2>/dev/null status -m ${MODEL} --color --relations|awk '/Relat/,/^$/{if (/Relation|^'${AVAL}':| '${AVAL}':/) print;next}'|sed "1s/.*$/$(printf '\e[1m&\e[0m')/g;s/joining/$(printf '\e[1;33m&\e[0m')/g"
+ 	[[ -n ${AVAL} && ${HCMR} = true && $BUNDLE = false ]] && juju 2>/dev/null status -m ${MODEL} --color --relations|awk '/Relat/,/^$/{if (/Relation|^'${AVAL}':| '${AVAL}':/) print;next}'|sed -E "s/$(printf '%s\n' ${LSAAS[@]}|paste -sd'|')/$(printf '\e[1;36m&\e[0m')/g;1s/.*$/$(printf '\e[1m&\e[0m')/g;s/joining/$(printf '\e[1;33m&\e[0m')/g"
+ 	[[ -n ${AVAL} && ${HCMR} = false && $BUNDLE = true ]] && juju 2>/dev/null status -m ${MODEL} --color --relations|awk '/Relat/,/^$/{if (/^'${AVAL}':| '${AVAL}':/) print "  - [ "$1", "$2" ]";next}'
+ 	[[ -n ${AVAL} && ${HCMR} = true && $BUNDLE = true ]] && { printf "\n\e[38;2;255;225;0m\e[4GNote:\e[0m Highlight cross-model relations not possible with bundle print option.\n\n";juju 2>/dev/null status -m ${MODEL} --color --relations|awk '/Relat/,/^$/{if (/^'${AVAL}':| '${AVAL}':/) print "  - [ "$1", "$2" ]";next}'; }
+ 	[[ -z ${AVAL} && ${HCMR} = false && $BUNDLE = false ]] && juju 2>/dev/null status -m ${MODEL} --color --relations|awk '/Relat/,/^$/{print}'|sed "1s/.*$/$(printf '\e[1m&\e[0m')/g;s/joining/$(printf '\e[1;33m&\e[0m')/g"
+ 	[[ -z ${AVAL} && ${HCMR} = true && $BUNDLE = false ]] && juju 2>/dev/null status -m ${MODEL} --color --relations|awk '/Relat/,/^$/{print}'|sed -E "s/$(printf '%s\n' ${LSAAS[@]}|paste -sd'|')/$(printf '\e[1;36m&\e[0m')/g;1s/.*$/$(printf '\e[1m&\e[0m')/g;s/joining/$(printf '\e[1;33m&\e[0m')/g"
+ 	[[ -z ${AVAL} && ${HCMR} = false && $BUNDLE = true ]] && juju 2>/dev/null status -m ${MODEL} --color --relations|awk '/Relat/,/^$/{if (/Relation|^$/) next;print "  - [ "$1", "$2" ]";next}'
+ 	[[ -z ${AVAL} && ${HCMR} = true && $BUNDLE = true ]] && { printf "\n\e[38;2;255;225;0m\e[4GNote:\e[0m Highlight cross-model relations not possible with bundle print option.\n\n";juju 2>/dev/null status -m ${MODEL} --color --relations|awk '/Relat/,/^$/{if (/Relation|^$/) next;print "  - [ "$1", "$2" ]";next}'; }
+
+ }
